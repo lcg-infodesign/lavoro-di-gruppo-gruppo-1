@@ -1,18 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Il sito mostra le spese di ogni regione italiana nel 2021 nelle diverse categorie. É possibile effettuare confronti tra due regioni a scelta, sia dal punto di vista assoluto, con un pallino che corrisoonde a €100.000.000, sia dal punto di vista percentuale.">
+    <meta property="og:title" content="La geografia delle risorse">
 
-    <title>Sketch</title>
+    <meta property="og:description" content="Visualizza quanto spende la tua regione!">
+    <meta property="og:image" content=""> <!--inserire il link immagine del sito--> 
+    <meta property="og:url" content=""> <!--inserire link sito--> 
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="it_IT">
+
+    <link rel="stylesheet" href="https://use.typekit.net/sad4kpn.css">
+
+    <title>Geografia delle risorse</title>
 
     <link rel="stylesheet" type="text/css" href="style.css">
 
+    
+    <link rel="icon" href="assets/images/euro-sign-new.ico" type="image/x-icon">
+
     <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
+    <script src="scripts/toggle.js"></script>
+    <script src="scripts/percentage.js"></script>
   </head>
 
   <body>
-    <script src="sketch.js"></script>
+    <div id="heading">
+      <h1>La geografia delle risorse</h1>
+      <p>Differenze regionali nelle spese pubbliche</p>
+    </div>
+    <div id="sketch-parent">
+      <div id="sketch-container"></div>
+    </div>
+    <div id="regions-container">
+      <select id="regions-dropdown" class="regions-select" onchange="pRegionClicked(event)"></select>
+      <div id="comparison-button" onclick="pToggleComparisonButton(event)">
+        <img src="assets/images/plus.png" alt="Icona per il confronto">
+      </div>
+      <select id="comparison-dropdown" class="regions-select" onchange="pComparisonClicked(event)"></select>
+    </div>
+    <div id="toggle-container">
+        <div class="toggle-button" id="toggle-button" onclick="tToggleView()">
+            <div class="toggle-switch" id="toggle-switch"></div>
+        </div>
+
+        <div id="toggle-description">
+            <div class="circle"></div>
+            <div class="equals">=</div>
+            <div class="text">100.000.000€</div>
+        </div>
+    </div>
+    <script src="scripts/index.js"></script>
+    <script src="scripts/sketch.js"></script>
   </body>
+  
 </html>
