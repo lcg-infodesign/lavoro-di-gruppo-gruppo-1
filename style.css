@@ -162,22 +162,49 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-bottom: 50px;
+
 }
 .regions-select {
   font-family: 'forma-djr-text', sans-serif;
   font-size: 16px;
   background-color: white;
   padding: 10px 20px;
-  border-radius: 20px;
+  border-radius: 15px;
   -webkit-appearance: none;
   appearance: none;
   border: none;
   height: 39px;
   cursor: pointer;
+  color: rgb(62, 62, 62);
+ 
 }
+
+#box{
+  width: fit-content;
+  padding: 5px;
+  background-color: transparent;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+}
+
+#box:hover{
+  height: 100px;
+  background-color: rgba(220, 220, 220, 0.468);
+  transition: 0.3s;
+}
+
+.regions-select:hover{
+  background-color: rgb(62, 62, 62);
+  color: white;
+  transition: 0.1s;
+}
+
 #regions-dropdown {
   width: 175px;
 }
+
 #comparison-button {
   width: 33px;
   height: 33px;

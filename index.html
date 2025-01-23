@@ -41,7 +41,7 @@
           <h1>Geografia delle risorse</h1>
           <p>Questo progetto si propone di rappresentare in modo chiaro e interattivo la distribuzione della spesa pubblica in Italia, con un focus su valori assoluti e percentuali.
           Ogni puntino rappresenta 100 milioni di Euro, e i colori distinguono i principali settori di spesa. Con un semplice bottone, è possibile cambiare visualizzazione tra valori assoluti e percentuali, offrendo una doppia prospettiva sulla gestione delle risorse.
-          La visualizzazione permette di esplorare i dati regione per regione. rendendo accessibili informazioni complesse attraverso un design
+          La visualizzazione permette di esplorare i dati regione per regione. Rendendo accessibili informazioni complesse attraverso un design
           intuitivo e immediato.</p>
         </div>
         <div id="legenda">
@@ -70,7 +70,9 @@
       <div id="sketch-container"></div>
     </div>
     <div id="regions-container">
-      <select id="regions-dropdown" class="regions-select" onchange="pRegionClicked(event)"></select>
+      <div id="box">
+        <select id="regions-dropdown" class="regions-select" onchange="pRegionClicked(event)"></select>
+      </div>
       <div id="comparison-button" onclick="pToggleComparisonButton(event)">
         <img src="assets/images/plus.png" alt="Icona per il confronto">
       </div>
