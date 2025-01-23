@@ -5,20 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Il sito mostra le spese di ogni regione italiana nel 2021 nelle diverse categorie. É possibile effettuare confronti tra due regioni a scelta, sia dal punto di vista assoluto, con un pallino che corrisoonde a €100.000.000, sia dal punto di vista percentuale.">
     <meta property="og:title" content="La geografia delle risorse">
-
     <meta property="og:description" content="Visualizza quanto spende la tua regione!">
     <meta property="og:image" content=""> <!--inserire il link immagine del sito--> 
     <meta property="og:url" content=""> <!--inserire link sito--> 
     <meta property="og:type" content="website">
     <meta property="og:locale" content="it_IT">
 
-    <link rel="stylesheet" href="https://use.typekit.net/sad4kpn.css">
-
     <title>Geografia delle risorse</title>
 
     <link rel="stylesheet" type="text/css" href="style.css">
-
-    
+    <link rel="stylesheet" href="https://use.typekit.net/sad4kpn.css">
     <link rel="icon" href="assets/images/euro-sign-new.ico" type="image/x-icon">
 
     <script src="libraries/p5.min.js"></script>
@@ -28,9 +24,36 @@
   </head>
 
   <body>
-    <div id="heading">
-      <h1>La geografia delle risorse</h1>
-      <p>Differenze regionali nelle spese pubbliche</p>
+    <div id="intro">
+      <div id="intro-left">
+        <img src="assets/images/balls.png" alt="Balls" id="balls">
+        <div>
+          <img src="assets/images/polimi_white.svg" alt="Logo Politecnico di Milano" id="logo-polimi">
+          
+          <p>A.A. 2024/25 - Design della Comunicazione</p>
+          <p>Laboratorio di Computer Grafica per l'Information Design</p>
+          <p>Prof. Mauri, Prof. Conficconi</p>
+          <p>Bano, Chinni, Ribeiro Lages, Magalhães, Menoni, Piganzoli, Segato</p>
+        </div>
+      </div>
+      <div id="intro-right">
+        <div>
+          <h1>Geografia delle risorse</h1>
+          <p>Questo progetto si propone di rappresentare in modo chiaro e interattivo la distribuzione della spesa pubblica in Italia, con un focus su valori assoluti e percentuali.
+          Ogni puntino rappresenta 100 milioni di euro, e i colori distinguono i principali settori di spesa. Con un semplice bottone, è possibile switchare tra valori assoluti e percentuali, offrendo una doppia prospettiva sulla gestione delle risorse.
+          La visualizzazione permette di esplorare i dati regione per regione. rendendo accessibili informazioni complesse attraverso un design
+          intuitivo e immediato.</p>
+        </div>
+        <div id="legenda">
+          <strong>Come funziona?</strong>
+          <div></div>
+          <div class="legenda-inline">
+            <div class="demo-circle"></div>
+            <p id="demo-value">100.000.000€</p>
+          </div>
+          <p>Ogni cerchio rappresenta una spesa di 100 milioni di Euro</p>
+        </div>
+      </div>
     </div>
     <div id="sketch-parent">
       <div id="sketch-container"></div>
