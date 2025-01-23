@@ -47,7 +47,7 @@
   
     // Strong attraction to cluster center
     attractToClusterCenter() {
-        let clusterCenter = createVector(this.homeCluster.homeCluster.center.x, this.homeCluster.homeCluster.center.y);
+        let clusterCenter = createVector(this.homeCluster.center.x, this.homeCluster.center.y);
         let desired = p5.Vector.sub(clusterCenter, this.position);
         desired.normalize();
         desired.mult(this.maxSpeed);
@@ -91,7 +91,7 @@
   
     // Strong boundary enforcement
     enforceClusterBoundary() {
-        let clusterCenter = createVector(this.homeCluster.homeCluster.center.x, this.homeCluster.homeCluster.center.y);
+        let clusterCenter = createVector(this.homeCluster.center.x, this.homeCluster.center.y);
         let distanceFromCenter = p5.Vector.dist(this.position, clusterCenter);
         let clusterRadius = this.homeCluster.radius;
   
@@ -121,9 +121,10 @@
     }
   
     display() {
-        noStroke();
+        stroke(150);
+        noFill();
         // Slight color variation within cluster
-        fill("red");
+        
         ellipse(this.position.x, this.position.y, this.radius * 2);
     }
   }

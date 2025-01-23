@@ -132,12 +132,12 @@ function setup() {
       attractionStrength: 0.3,
       boundaryStiffness: 0.5
     }
-    clusters.push(new ClusterAgent(250, 250, cluster));
+    clusters.push(cluster);
   }
 
   let sum = 0;
   clusters.forEach(cluster => {
-    for (let i = 0; i < cluster.homeCluster.agentCount; i++) {
+    for (let i = 0; i < cluster.agentCount; i++) {
       let placed = false;
       let attempts = 0;
 
@@ -145,18 +145,18 @@ function setup() {
         let angle = random(TWO_PI);
         let radius = random(0, cluster.radius * 0.8);
         
-        let x = cluster.homeCluster.center.x + cos(angle) * radius;
-        let y = cluster.homeCluster.center.y + sin(angle) * radius;
+        let x = cluster.center.x + cos(angle) * radius;
+        let y = cluster.center.y + sin(angle) * radius;
         
         // Check for overlap with existing agents
-        let overlaps = agents.some(agent => 
+        /*let overlaps = agents.some(agent => 
           p5.Vector.dist(createVector(x, y), agent.position) < agent.radius * 2
-        );
+        );*/
         
-        if (!overlaps) {
+        //if (!overlaps) {
           agents.push(new ClusterAgent(x, y, cluster));
           placed = true;
-        }
+        //}
         sum++;
         attempts++;
       }
@@ -230,12 +230,17 @@ function drawComparisonView() {
  * Funzione per disegnare i cerchi della visualizzazione principale
  */
 function drawMainView() {
+  clusters.forEach(cluster => {
+    console.log(cluster);
+    stroke(cluster.color[0], cluster.color[1], cluster.color[2], 50);
+    ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
+  });
   // Simulation loop
   for (let agent of agents) {
     agent.applyClusterBehaviors(agents);
     agent.update();
     agent.display();
-}
+  }
   /*
   let area = windowWidth * 0.9 * (windowHeight - 230);
   let circleArea = area / ((totalExpenses / 100000000) * 1.8);
