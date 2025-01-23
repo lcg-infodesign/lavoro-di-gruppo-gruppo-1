@@ -31,7 +31,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-family: "Satoshi", sans-serif;
+  font-family: "semplicitapro", sans-serif;
 }
 #intro-left {
   width: 35%;
@@ -77,6 +77,38 @@ body {
   flex-direction: row;
   justify-content: left;
   align-items: center;
+}
+#mtoggle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 200px;
+  height: 40px;
+  background-color: #343038;
+  margin: 10px 0;
+  border-radius: 20px;
+}
+#mtoggle p {
+  font-size: 16px;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
+.mtoggle-section {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.m-selected {
+  background-color: #252129;
+  border-radius: 20px;
+  color: white;
+  margin: 0 5px;
+  height: calc(100% - 10px);
 }
 .demo-circle {
   width: 16px;
