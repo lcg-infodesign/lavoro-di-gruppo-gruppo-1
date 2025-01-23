@@ -8,21 +8,6 @@
  * Questo script carica la rappresentazione grafica usando il framework p5.js
  */
 
-
-//CODICE DI PROVA CIRCLE PACKING****************************************************************************************************** */
-const steps = 1000;
-const circles = []; // Primo livello: cerchi grandi
-
-const margin = 10;
-
-const minRadius = 50; // Raggio minimo dei cerchi grandi
-const maxRadius = 200; // Raggio massimo dei cerchi grandi
-const stepRadius = 1;
-
-const smallRadius = 10; // Raggio fisso dei cerchi piccoli
-const densityFactor = 0.5; // Fattore di densità per il numero massimo di cerchi piccoli
-//*************************************************************************************************************************** */
-
 let data;
 let expenses;
 let color = "white";
@@ -52,6 +37,12 @@ let textColor = "#ffffff";
 let categoriesColors = ["#F87A01", "#C2858C", "#016647", "#FF467B", "#0001B1", "#7469B5", "#B22F75", "#FFAFD7", "FF040F", "#84B5BC", "#DABC36", "#A69FF2", "#28D3E9", "#6D8C6B",
                         "#F28C9C", "#2FA398", "#F7B429", "#527BFF", "#CFAD7C", "#BDD2FF", "#DFF304", "#EFBE9E", "#FFD459", "#02C3BD", "#B8FFFA", "#A1153E", "#E34516", "#B19B2C", "#FFFFFF"];
 
+/**
+ * CLUSTERS
+ */
+let clusters = [];
+let agents = [];
+
 function preload() {
   data = loadTable('assets/dataset/uscite.csv', 'ssv', 'header');
 }
@@ -61,7 +52,8 @@ function setup() {
   canvas.parent("sketch-container");
   canvas.loadPixels();
 
-  frameRate(60);
+  //frameRate(60);
+  noLoop();
 
   expenses = data.getObject();
   expensesLength = Object.keys(expenses).length;
@@ -129,24 +121,48 @@ function setup() {
     }
     regionDataLastYear.push(region);
   }
+
+  // Popolo l'array dei cluster, creando un cluster per ogni categoria di spesa
+  for(let i = 0; i < categories.length; i++) {
+    let cluster = {
+      center: { x: random(100, windowWidth - 100), y: random(100, windowHeight - 100) },
+      color: [70, 130, 210],
+      radius: 100,
+      agentCount: floor(expensesPerCategory[i] / 100000000),
+      attractionStrength: 0.3,
+      boundaryStiffness: 0.5
+    }
+    clusters.push(new ClusterAgent(250, 250, cluster));
+  }
+
+  let sum = 0;
+  clusters.forEach(cluster => {
+    for (let i = 0; i < cluster.homeCluster.agentCount; i++) {
+      let placed = false;
+      let attempts = 0;
+
+      while (!placed && attempts < 100) {
+        let angle = random(TWO_PI);
+        let radius = random(0, cluster.radius * 0.8);
+        
+        let x = cluster.homeCluster.center.x + cos(angle) * radius;
+        let y = cluster.homeCluster.center.y + sin(angle) * radius;
+        
+        // Check for overlap with existing agents
+        let overlaps = agents.some(agent => 
+          p5.Vector.dist(createVector(x, y), agent.position) < agent.radius * 2
+        );
+        
+        if (!overlaps) {
+          agents.push(new ClusterAgent(x, y, cluster));
+          placed = true;
+        }
+        sum++;
+        attempts++;
+      }
+    }
+  });
 }
-
-//********************************************************************************************************************** */
-function collides(x, y, r, array) {
-  // Controlla se un cerchio collide con i margini o altri cerchi in un array
-  if (x - r < margin || x + r > width - margin || y - r < margin || y + r > height - margin) return true;
-  return array.find(c => dist(c.x, c.y, x, y) <= c.r + r);
-}
-
-function maxSmallCircles(bigRadius) {
-  // Calcola il numero massimo di cerchi piccoli in base al raggio del cerchio grande
-  const bigArea = PI * bigRadius * bigRadius;
-  const smallArea = PI * smallRadius * smallRadius;
-  return floor(densityFactor * (bigArea / smallArea));
-}
-//********************************************************************************************************************** */
-
-
 
 function draw() {
   background(0);
@@ -166,68 +182,10 @@ function draw() {
 /**
  * Funzione per disegnare la visualizzazione di confronto
  */
-
-
 function drawComparisonView() {
-
   let area = windowWidth * 0.40 * (windowHeight - 230);
   let circleArea = area / ((totalExpenses / 100000000) * 1.8);
   let radius = Math.sqrt(circleArea / Math.PI);
-
-//************************************************************************************************************************** */
-  // Genera il primo livello: cerchi grandi
-  for (let i = 0; i < steps; i++) {
-    const x = lerp(margin, width - margin, random());
-    const y = lerp(margin, height - margin, random());
-    for (let r = minRadius; r <= maxRadius; r += stepRadius) {
-      const col = collides(x, y, r, circles);
-      if (col && r == minRadius) break;
-      if (col) {
-        r -= stepRadius;
-        const color = categoriesColors[circles.length % categoriesColors.length]; // Assegna un colore ciclico
-        noFill();
-        noStroke();
-        circle(x, y, r * 2); // Disegna il cerchio grande
-        circles.push({ x, y, r, color, smallCircles: [] }); // Aggiungi all'array del primo livello
-        break;
-      }
-      if (!col && r == maxRadius) {
-        const color = categoriesColors[circles.length % categoriesColors.length];
-        noFill();
-        noStroke();
-        circle(x, y, r * 2);
-        circles.push({ x, y, r, color, smallCircles: [] });
-        break;
-      }
-    }
-    if (circles.length === categoriesColors.length) break; // Limita il numero di cerchi grandi ai colori disponibili
-  }
-
-    // Genera il secondo livello: cerchi piccoli dentro ogni cerchio grande
-    for (let big of circles) {
-      const { x: cx, y: cy, r: bigR, color } = big;
-      const smallCircles = [];
-      const maxCount = maxSmallCircles(bigR); // Calcola il numero massimo di cerchi piccoli
-      fill(color); // Usa il colore del cerchio grande per i cerchi piccoli
-      for (let i = 0; i < steps; i++) {
-        const sx = random(cx - bigR + smallRadius, cx + bigR - smallRadius);
-        const sy = random(cy - bigR + smallRadius, cy + bigR - smallRadius);
-        const col = collides(sx, sy, smallRadius, smallCircles);
-        const insideBig = dist(sx, sy, cx, cy) + smallRadius <= bigR;
-        if (!col && insideBig) {
-          smallCircles.push({ x: sx, y: sy, radius });
-          circle(sx, sy, smallRadius * 2); // Disegna il cerchio piccolo
-        }
-        if (smallCircles.length >= maxCount) break; // Limita il numero di cerchi piccoli
-      }
-      big.smallCircles = smallCircles; // Salva i cerchi piccoli nel cerchio grande
-    }
-
-//************************************************************************************************************************** */
-
-
-
-
   let positionX = radius;
   let positionY = radius;
 
@@ -272,6 +230,13 @@ function drawComparisonView() {
  * Funzione per disegnare i cerchi della visualizzazione principale
  */
 function drawMainView() {
+  // Simulation loop
+  for (let agent of agents) {
+    agent.applyClusterBehaviors(agents);
+    agent.update();
+    agent.display();
+}
+  /*
   let area = windowWidth * 0.9 * (windowHeight - 230);
   let circleArea = area / ((totalExpenses / 100000000) * 1.8);
   let radius = Math.sqrt(circleArea / Math.PI);
@@ -306,6 +271,7 @@ function drawMainView() {
       }
     }
   }
+    */
 }
 
 /**
