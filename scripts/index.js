@@ -53,11 +53,13 @@ function pFindRegionIndex(regionName) {
  */
 function pToggleComparisonButton(e) {
     let pComparisonDropdown = document.getElementById('box-2');
+    let button = e.target.closest('#comparison-button'); // Ensure we get the button element
+    
     if(pComparisonDropdown.style.display == 'block') {
         // Nascondo il dropdown
         pComparisonDropdown.style.display = 'none';
         // Ruoto il pulsante di apertura del dropdown di 45 gradi
-        e.target.style.transform = 'rotate(0deg)';
+        button.classList.remove('rotated');
         // Abilito la selezione di Tutte le regioni
         document.getElementById('regions-dropdown').childNodes[0].disabled = false;
         // Modifico la visualizzazione
@@ -67,7 +69,7 @@ function pToggleComparisonButton(e) {
         // Mostro il dropdown
         pComparisonDropdown.style.display = 'block';
         // Ruoto il pulsante di apertura del dropdown di 45 gradi
-        e.target.style.transform = 'rotate(45deg)';
+        button.classList.add('rotated');
         // Cambio la selezione del dropdown di sinistra se è tutte le regioni
         if(selectedRegion == "Tutte le regioni") {
             document.getElementById('regions-dropdown').selectedIndex = 3;

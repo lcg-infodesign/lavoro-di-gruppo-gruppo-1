@@ -163,7 +163,7 @@ body {
   align-items: center;
   width: 100%;
   margin-bottom: 50px;
-
+  
 }
 .regions-select {
   font-family: 'forma-djr-text', sans-serif;
@@ -214,7 +214,14 @@ body {
   justify-content: center;
   cursor: pointer;
   margin: 0 10px;
-  transition: all 0.7s;
+}
+
+#comparison-button.rotated {
+  transform: rotate(45deg);
+}
+
+#comparison-button {
+  transition: 0.5s ease;
 }
 #comparison-button img {
   width: 60%;
