@@ -61,6 +61,14 @@ body {
   font-size: 1.5rem;
   margin: 0;
 }
+a {
+  color: #B8E558;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #B8E558;
+}
 #logo-polimi {
   width: 150px;
   margin-bottom: 5px;
@@ -201,6 +209,19 @@ body {
   width: 175px;
   position: absolute;
   bottom: 5px;
+}
+
+.single-region{
+  font-family: 'forma-djr-text', sans-serif;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 13px;
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+}
+
+.single-region:hover{
+  background-color: rgba(0, 0, 0, 0.362);
 }
 
 #comparison-button {

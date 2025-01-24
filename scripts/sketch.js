@@ -80,7 +80,7 @@ function setup() {
     }
   }
 
-  // Eseguo il calcolo dei pallini per ogi categoria di spesa
+  // Eseguo il calcolo dei pallini per ogni categoria di spesa
   for(let i = 0; i < categories.length; i++) {
     let sum = 0;
     for(let j = 0; j < expensesLength; j++) {
@@ -148,7 +148,7 @@ function setup() {
 
     // Creo un nuovo centro casuale che non esca dal canvas
     cluster.center.x = random((frameWidth * 0.05 + (cluster.radius * 2)), frameWidth - (cluster.radius * 2));
-    cluster.center.y = random((115 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
+    cluster.center.y = random((10 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
 
     // Controllo che il cluster non si sovrapponga a cluster esistenti
     for(let attempts = 0; attempts < 100; attempts++) {
@@ -158,7 +158,7 @@ function setup() {
       if (overlaps) {
         // Creo un nuovo centro che non esca dal canvas
         cluster.center.x = random((frameWidth * 0.05 + (cluster.radius * 2)), frameWidth - (cluster.radius * 2));
-        cluster.center.y = random((115 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
+        cluster.center.y = random((10 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
       }
       else {
         break;

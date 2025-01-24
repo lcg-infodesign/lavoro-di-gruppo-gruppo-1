@@ -21,16 +21,6 @@
     <script src="libraries/p5.sound.min.js"></script>
     <script src="scripts/toggle.js"></script>
     <script src="scripts/percentage.js"></script>
-    <style>
-      a {
-        color: #B8E558;
-        text-decoration: none;
-      }
-
-      a:visited {
-        color: #B8E558;
-      }
-    </style>
   </head>
 
   <body>
@@ -49,8 +39,12 @@
       <div id="intro-right">
         <div>
           <h1>Geografia delle risorse</h1>
-          <p>Questo progetto offre una rappresentazione chiara e interattiva della distribuzione della spesa pubblica in Italia, basata sui dati ufficiali del Ministero dell’Economia pubblicati sulla piattaforma <a href="https://www.agenziacoesione.gov.it/sistema-conti-pubblici-territoriali/" target="_blank">CPT - Conti Pubblici Territoriali</a>. Il dataset comprende le spese regionali suddivise per categoria, consentendo un'analisi dettagliata e trasparente.
-          Ogni puntino nella visualizzazione rappresenta 100 milioni di Euro, con colori distintivi per i principali settori di spesa. Un semplice bottone permette di alternare tra visualizzazioni in valori assoluti e percentuali, fornendo una doppia prospettiva sulla gestione delle risorse. L'interfaccia intuitiva consente inoltre di esplorare i dati regione per regione, trasformando informazioni complesse in un design immediato e accessibile.</p>
+          <p>Questo progetto offre una rappresentazione chiara e interattiva della distribuzione della spesa pubblica in Italia, basata sui dati ufficiali del Ministero dell’Economia pubblicati sulla piattaforma 
+            <a href="https://www.agenziacoesione.gov.it/sistema-conti-pubblici-territoriali/" target="_blank">CPT - Conti Pubblici Territoriali</a>.
+              Il dataset comprende le spese regionali suddivise per categoria, consentendo un'analisi dettagliata e trasparente.
+              Ogni puntino nella visualizzazione rappresenta 100 milioni di Euro, con colori distintivi per i principali settori di spesa. 
+              Un semplice bottone permette di alternare tra visualizzazioni in valori assoluti e percentuali, fornendo una doppia prospettiva sulla gestione delle risorse. 
+              L'interfaccia intuitiva consente inoltre di esplorare i dati regione per regione, trasformando informazioni complesse in un design immediato e accessibile.</p>
         </div>
         <div id="legenda">
           <strong>Come funziona?</strong>
@@ -80,12 +74,14 @@
     <div id="regions-container">
       <div id="box">
         <select id="regions-dropdown" class="regions-select" onchange="pRegionClicked(event)"></select>
+          <div class="single-region"> Toscana </div>
       </div>
       <div id="comparison-button" onclick="pToggleComparisonButton(event)">
         <img src="assets/images/plus.png" alt="Icona per il confronto">
       </div>
       <div id="box-2">
         <select id="comparison-dropdown" class="regions-select" onchange="pComparisonClicked(event)"></select>
+          <div class="single-region"> Toscana </div>
       </div>
     </div>
     <div id="toggle-container">
