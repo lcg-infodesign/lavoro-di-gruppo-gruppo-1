@@ -52,7 +52,7 @@ function pFindRegionIndex(regionName) {
  * @param {Event} e Evento del click
  */
 function pToggleComparisonButton(e) {
-    let pComparisonDropdown = document.getElementById('comparison-dropdown');
+    let pComparisonDropdown = document.getElementById('box-2');
     if(pComparisonDropdown.style.display == 'block') {
         // Nascondo il dropdown
         pComparisonDropdown.style.display = 'none';

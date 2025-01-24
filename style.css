@@ -223,8 +223,28 @@ body {
   margin: auto;
 }
 #comparison-dropdown {
-  display: none;
-  transition: all 0.7s;
+  position: absolute;
+  bottom:5px;
+}
+
+#box-2 {
+    display: none;
+    width: 175px;
+    height: 39px;
+    padding: 5px;
+    background-color: transparent;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    background-color: transparent; 
+    transition: all 0.7s;
+}
+
+#box-2:hover {
+  height: 200px;
+  transition: 0.5s;
+  margin-top: -161px;
+  background-color: rgba(255, 0, 0,1);
 }
 
 #heading h1 {
