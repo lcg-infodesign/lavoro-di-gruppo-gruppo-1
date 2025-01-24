@@ -177,32 +177,30 @@ body {
   height: 39px;
   cursor: pointer;
   color: rgb(62, 62, 62);
- 
+  margin-top: 5px;
 }
 
-#box{
-  width: fit-content;
+#box {
+  width: 175px;
+  height: 39px;
   padding: 5px;
   background-color: transparent;
   border-radius: 15px;
   overflow: hidden;
   position: relative;
+  background-color: transparent; 
 }
-
-#box:hover{
-  height: 100px;
-  background-color: rgba(220, 220, 220, 0.468);
-  transition: 0.3s;
-}
-
-.regions-select:hover{
-  background-color: rgb(62, 62, 62);
-  color: white;
-  transition: 0.1s;
+#box:hover {
+  height: 200px;
+  transition: 0.5s;
+  margin-top: -161px;
+  background-color: rgba(255, 0, 0,1);
 }
 
 #regions-dropdown {
   width: 175px;
+  position: absolute;
+  bottom: 5px;
 }
 
 #comparison-button {
