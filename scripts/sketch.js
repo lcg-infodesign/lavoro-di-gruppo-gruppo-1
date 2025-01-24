@@ -126,7 +126,7 @@ function setup() {
   for(let i = 0; i < categories.length; i++) {
     let cluster = {
       center: { x: random(100, windowWidth - 100), y: random(100, windowHeight - 100) },
-      color: [70, 130, 210],
+      color: categoriesColors[i],
       radius: 100,
       agentCount: floor(expensesPerCategory[i] / 100000000),
       attractionStrength: 0.3,
@@ -135,15 +135,15 @@ function setup() {
     clusters.push(cluster);
   }
 
-  let sum = 0;
   clusters.forEach(cluster => {
+    let sum = 0;
     for (let i = 0; i < cluster.agentCount; i++) {
       let placed = false;
       let attempts = 0;
 
       while (!placed && attempts < 100) {
         let angle = random(TWO_PI);
-        let radius = random(0, cluster.radius * 0.8);
+        let radius = random(0, cluster.radius * 0.9);
         
         let x = cluster.center.x + cos(angle) * radius;
         let y = cluster.center.y + sin(angle) * radius;
@@ -154,12 +154,16 @@ function setup() {
         );*/
         
         //if (!overlaps) {
-          agents.push(new ClusterAgent(x, y, cluster));
-          placed = true;
+        agents.push(new ClusterAgent(x, y, cluster));
+        placed = true;
         //}
         sum++;
         attempts++;
       }
+      // Ridimensiono raggio cluster in base a numero agenti
+      let agentsArea = sum * (agentRadius) * (agentRadius);
+      let newRadius = sqrt(agentsArea / PI);
+      cluster.radius = newRadius;
     }
   });
 }
@@ -231,7 +235,6 @@ function drawComparisonView() {
  */
 function drawMainView() {
   clusters.forEach(cluster => {
-    console.log(cluster);
     stroke(cluster.color[0], cluster.color[1], cluster.color[2], 50);
     ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
   });
