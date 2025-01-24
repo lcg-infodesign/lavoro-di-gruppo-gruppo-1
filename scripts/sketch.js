@@ -13,6 +13,9 @@ let expenses;
 let color = "white";
 let center;
 
+let frameWidth = 0;
+let frameHeight = 0;
+
 let selectedRegion = "Tutte le regioni";
 let selectedComparison = "Piemonte";
 let isComparison = false;
@@ -48,7 +51,9 @@ function preload() {
 }
 
 function setup() {
-  canvas = createCanvas(windowWidth * 0.9, windowHeight - 230);
+  frameWidth = windowWidth * 0.9;
+  frameHeight = windowHeight - 230;
+  canvas = createCanvas(frameWidth, frameHeight);
   canvas.parent("sketch-container");
   canvas.loadPixels();
 
@@ -125,7 +130,7 @@ function setup() {
   // Popolo l'array dei cluster, creando un cluster per ogni categoria di spesa
   for(let i = 0; i < categories.length; i++) {
     let cluster = {
-      center: { x: random(100, windowWidth - 100), y: random(100, windowHeight - 100) },
+      center: { x: frameWidth / 2, y: frameHeight / 2 },
       color: categoriesColors[i],
       radius: 100,
       agentCount: floor(expensesPerCategory[i] / 100000000),
@@ -136,34 +141,39 @@ function setup() {
   }
 
   clusters.forEach(cluster => {
-    let sum = 0;
-    for (let i = 0; i < cluster.agentCount; i++) {
-      let placed = false;
-      let attempts = 0;
+    // Ridimensiono raggio cluster in base a numero agenti
+    let agentsArea = cluster.agentCount * (agentRadius * agentRadius);
+    let newRadius = sqrt(agentsArea / PI);
+    cluster.radius = newRadius;
 
-      while (!placed && attempts < 100) {
-        let angle = random(TWO_PI);
-        let radius = random(0, cluster.radius * 0.9);
-        
-        let x = cluster.center.x + cos(angle) * radius;
-        let y = cluster.center.y + sin(angle) * radius;
-        
-        // Check for overlap with existing agents
-        /*let overlaps = agents.some(agent => 
-          p5.Vector.dist(createVector(x, y), agent.position) < agent.radius * 2
-        );*/
-        
-        //if (!overlaps) {
-        agents.push(new ClusterAgent(x, y, cluster));
-        placed = true;
-        //}
-        sum++;
-        attempts++;
+    // Creo un nuovo centro casuale che non esca dal canvas
+    cluster.center.x = random((frameWidth * 0.05 + (cluster.radius * 2)), frameWidth - (cluster.radius * 2));
+    cluster.center.y = random((115 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
+
+    // Controllo che il cluster non si sovrapponga a cluster esistenti
+    for(let attempts = 0; attempts < 100; attempts++) {
+      let overlaps = clusters.some(c => 
+        p5.Vector.dist(createVector(cluster.center.x, cluster.center.y), createVector(c.center.x, c.center.y)) < (cluster.radius + c.radius)
+      );
+      if (overlaps) {
+        // Creo un nuovo centro che non esca dal canvas
+        cluster.center.x = random((frameWidth * 0.05 + (cluster.radius * 2)), frameWidth - (cluster.radius * 2));
+        cluster.center.y = random((115 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
       }
-      // Ridimensiono raggio cluster in base a numero agenti
-      let agentsArea = sum * (agentRadius) * (agentRadius);
-      let newRadius = sqrt(agentsArea / PI);
-      cluster.radius = newRadius;
+      else {
+        break;
+      }
+      attempts++;
+    }
+
+    for(let i = 0; i < cluster.agentCount; i++) {
+      let angle = random(TWO_PI);
+      let radius = random(0, cluster.radius * 0.9);
+      
+      let x = cluster.center.x + cos(angle) * radius;
+      let y = cluster.center.y + sin(angle) * radius;
+
+      agents.push(new ClusterAgent(x, y, cluster));
     }
   });
 }
@@ -235,8 +245,10 @@ function drawComparisonView() {
  */
 function drawMainView() {
   clusters.forEach(cluster => {
+    fill("grey");
     stroke(cluster.color[0], cluster.color[1], cluster.color[2], 50);
     ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
+    noFill();
   });
   // Simulation loop
   for (let agent of agents) {
