@@ -184,13 +184,31 @@ a:visited {
   border: none;
   height: 39px;
   cursor: pointer;
-  color: rgb(62, 62, 62);
+  color: #343038;
   margin-top: 5px;
+  width: 100%;
+
 }
 .region-label {
   border: none;
+  font-size: 16px;
+  font-weight: 400;
+  height: 39px;
   width: 100%;
   margin-top: 3px;
+  border-radius: 13px;
+  background-color: transparent;
+  color: white;
+  font-weight: 400;
+
+}
+
+.region-label:hover {
+  background-color: white;
+  color: #343038;
+  transition: 0.3s;
+  font-weight: 500;
+
 }
 
 
@@ -211,12 +229,29 @@ a:visited {
   height: 200px;
   transition: 0.5s;
   margin-top: -161px;
-  background-color: rgba(255, 0, 0,1);
+  background-color: rgba(61, 61, 61, 0.851);
 }
 #regions-list {
   height: 150px;
   overflow-y: scroll;
 }
+
+#regions-list::-webkit-scrollbar {
+  height: 5px;
+  width: 7px;
+}
+
+#regions-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: white;
+  
+}
+
+ #regions-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(170, 170, 170);
+  transition: 0.2s;
+ }
+
 .single-region{
   font-family: 'forma-djr-text', sans-serif;
   font-size: 16px;
@@ -224,6 +259,7 @@ a:visited {
   border-radius: 13px;
   cursor: pointer;
   color: rgb(255, 255, 255);
+  
 }
 
 .single-region:hover{
