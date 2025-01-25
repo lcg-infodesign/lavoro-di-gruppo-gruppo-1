@@ -73,8 +73,10 @@
     </div>
     <div id="regions-container">
       <div id="box">
-        <select id="regions-dropdown" class="regions-select" onchange="pRegionClicked(event)"></select>
-          <div class="single-region"> Toscana </div>
+        <div id="regions-list"></div>
+        <div>
+          <button id="bottom-selected-region" class="regions-select" onclick="pRegionClicked(event)">Tutte le regioni</button>
+        </div>
       </div>
       <div id="comparison-button" onclick="pToggleComparisonButton(event)">
         <img src="assets/images/plus.png" alt="Icona per il confronto">

@@ -13,20 +13,18 @@
  */
 function pDrawLabels() {
     // Salvo il div che conterrà i label delle regioni
-    let pRegionsDropdown = document.getElementById('regions-dropdown');
+    let pRegionsList = document.getElementById('regions-list');
     // Salvo il div che conterrà i label delle regioni per il confronto
     let pComparisonDropdown = document.getElementById('comparison-dropdown');
 
     // Creo un option per ogni regione
     for (let i = 0; i < regions.length; i++) {
-        let pRegionLabel = document.createElement('option');
-        pRegionLabel.innerHTML = regions[i];
-        pRegionLabel.value = regions[i];
-        pRegionLabel.classList.add('region-label');
-        pRegionsDropdown.appendChild(pRegionLabel);
-        if(i != 0) {
-            pComparisonDropdown.appendChild(pRegionLabel.cloneNode(true));
-        }
+        let regionButton = document.createElement('button');
+        regionButton.className = 'region-label';
+        regionButton.value = regions[i];
+        regionButton.innerHTML = regions[i];
+        regionButton.onclick = pRegionClicked;
+        pRegionsList.appendChild(regionButton);
     }
 
     // Imposto "Tutte le regioni" come regione selezionata

@@ -187,6 +187,12 @@ a:visited {
   color: rgb(62, 62, 62);
   margin-top: 5px;
 }
+.region-label {
+  border: none;
+  width: 100%;
+  margin-top: 3px;
+}
+
 
 #box {
   width: 175px;
@@ -196,7 +202,10 @@ a:visited {
   border-radius: 15px;
   overflow: hidden;
   position: relative;
-  background-color: transparent; 
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  background-color: transparent;
 }
 #box:hover {
   height: 200px;
@@ -204,13 +213,10 @@ a:visited {
   margin-top: -161px;
   background-color: rgba(255, 0, 0,1);
 }
-
-#regions-dropdown {
-  width: 175px;
-  position: absolute;
-  bottom: 5px;
+#regions-list {
+  height: 150px;
+  overflow-y: scroll;
 }
-
 .single-region{
   font-family: 'forma-djr-text', sans-serif;
   font-size: 16px;
