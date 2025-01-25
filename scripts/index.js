@@ -39,6 +39,10 @@ function pDrawLabels() {
 function pRegionClicked(e) {
     // Ottengo il option selezionato
     selectedRegion = e.target.value;
+    // Scrivo il nome della regione selezionata nel button
+    let pSelection = document.getElementById("bottom-selected-region");
+    pSelection.value = selectedRegion;
+    pSelection.innerHTML = selectedRegion;
 }
 
 function pFindRegionIndex(regionName) {
