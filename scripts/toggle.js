@@ -36,3 +36,22 @@ function tToggleVisibility() {
     const toggleCont = document.getElementById("toggle-container");
     toggleCont.style.display = isComparison ? "block" : "none";
 }
+
+
+
+function tToggleView(selected) {
+    const leftToggle = document.getElementById("mtoggle-left");
+    const rightToggle = document.getElementById("mtoggle-right");
+
+    // Se il pulsante sinistro è selezionato (selected = 0)
+    if (selected === 0) {
+        leftToggle.classList.add("m-selected");  // Aggiungo la classe m-selected al pulsante sinistro
+        rightToggle.classList.remove("m-selected");  // Rimuovo la classe m-selected dal pulsante destro
+    } else {  // Se il pulsante destro è selezionato (selected = 1)
+        rightToggle.classList.add("m-selected");  // Aggiungo la classe m-selected al pulsante destro
+        leftToggle.classList.remove("m-selected");  // Rimuov la classe m-selected dal pulsante sinistro
+    }
+}
+
+
+
