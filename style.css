@@ -105,15 +105,12 @@ a {
   color: #B8E558;
   text-decoration: underline;
 }
-
 a:hover{
   color: #b8e558d3;
 }
-
 a:visited {
   color: #b8e558d3;
 }
-
 
 #logo-polimi {
   width: 150px;
@@ -303,27 +300,14 @@ a:visited {
   border-radius: 10px;
   background-color: #807d83;
 }
- #regions-list::-webkit-scrollbar-thumb:hover {
+#regions-list::-webkit-scrollbar-thumb:hover {
   background-color: white;
   transition: 0.2s;
   cursor: pointer;
 }
-
 #region-list:hover{
  scrollbar-color: white #807d83;
  }
-
-.single-region{
-  font-family: 'forma-djr-text', sans-serif;
-  font-size: 16px;
-  padding: 10px 20px;
-  border-radius: 13px;
-  cursor: pointer;
-  color: rgb(255, 255, 255); 
-}
-.single-region:hover{
-  background-color: rgba(0, 0, 0, 0.362);
-}
 
 #comparison-button {
   width: 33px;
@@ -355,7 +339,6 @@ a:visited {
 }
 
 #box-2 {
-  display: none;
   width: 175px;
   height: 39px;
   padding: 5px;
@@ -363,16 +346,18 @@ a:visited {
   border-radius: 15px;
   overflow: hidden;
   position: relative;
-  background-color: transparent; 
-  transition: all 0.7s;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  transition: all 0.5s;
 }
-
+ 
 #box-2:hover {
   height: 200px;
-  transition: 0.5s;
   margin-top: -161px;
-  background-color: rgba(255, 0, 0,1);
+  background-color: rgba(61, 61, 61, 0.851);
 }
+
 
 #heading h1 {
   font-family: 'Ortica';
