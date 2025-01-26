@@ -336,3 +336,4 @@ function showHover(hexColor) {
   text(category, mouseX + 15, mouseY - 30);
   pop();
 }
+

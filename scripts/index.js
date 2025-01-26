@@ -92,3 +92,4 @@ function pToggleComparisonButton(e) {
 function pComparisonClicked(e) {
     selectedComparison = e.target.value;
 }
+
