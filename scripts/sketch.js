@@ -165,61 +165,7 @@ function setup() {
     if(i == 0) {
       cluster.center.x = frameWidth / 2;
       cluster.center.y = frameHeight / 2;
-    }/*
-    else if(i == 1) {
-      // Imposto l'ascissa del cluster completamente a destra di quello precedente
-      cluster.center.x = previousCluster.center.x + previousCluster.radius + cluster.radius + 10;
-      // Imposto l'ordinata del cluster uguale a quello precedente
-      cluster.center.y = previousCluster.center.y;
     }
-    else if(i == 2) {
-      // Imposto l'ascissa del cluster completamente a sinistra di quella segnata come precedente
-      cluster.center.x = previousCluster.center.x - previousCluster.radius - cluster.radius - 10;
-      // Imposto l'ordinata del cluster uguale a quello precedente
-      cluster.center.y = previousCluster.center.y + cluster.radius + 10;
-    }
-    else if(i == 3) {
-      // Imposto l'ascissa del cluster completamente a sinistra di quella segnata come precedente
-      cluster.center.x = previousCluster.center.x - previousCluster.radius - cluster.radius - 10;
-      // Imposto l'ordinata del cluster uguale a quello precedente
-      cluster.center.y = previousCluster.center.y - cluster.radius - 10;
-      // Cambio il cluster precedente
-      previousCluster = cluster;
-    }
-    else if (i != 0) {*/
-      // Genero coordinate casuali
-      /*cluster.center.x = random((cluster.radius), frameWidth - (cluster.radius * 2));
-      cluster.center.y = random((10 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
-
-      let overlappedCounter = clusters.length;
-      while(overlappedCounter > 0) {
-        let overlaps = clusters.some(c =>
-          c != cluster && clusterDistance(c.center, cluster.center) < (c.radius + cluster.radius + 10)
-        );
-        if (overlaps) {
-          // Creo un nuovo centro che non esca dal canvas
-          cluster.center.x = random((cluster.radius), frameWidth - (cluster.radius * 2));
-          cluster.center.y = random((10 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
-        }
-        else {
-          overlappedCounter--;
-        }
-      }
-
-      for(let i = 0; i < cluster.agentCount; i++) {
-        let angle = random(TWO_PI);
-        let radius = random(0, cluster.radius) - agentRadius;
-  
-        let x = cluster.center.x + cos(angle) * radius;
-        let y = cluster.center.y + sin(angle) * radius;
-    }
-  }
-
-    console.log(frameWidth);*/
-
-
-
-
     else {
       // Genero nuove coordinate vicine al cluster centrale
       let generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster.center, cluster.radius + centralCluster.radius + 10);
@@ -242,9 +188,10 @@ function setup() {
         else {
           break;
         }
+
         if(attempts == 999) {
           // Seleziono randomicamente un altro cluster come cluster centrale
-          let randomVar = floor(random(1, clusters.length));
+          let randomVar = floor(random(1, i));
           centralCluster = clusters[randomVar];
           generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster.center, cluster.radius + centralCluster.radius + 10);
 
@@ -257,37 +204,33 @@ function setup() {
             let overlaps = clusters.some(c => 
               c != cluster && clusterDistance(c.center, cluster.center) < (c.radius + cluster.radius + 5)
             );
-            if (overlaps) {
+            if (overlaps && subAttempts < 99) {
               // Creo un nuovo centro che non esca dal canvas
               generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster.center, cluster.radius + centralCluster.radius + 10);
               cluster.center.x = generatedCoordinates.abscissa;
               cluster.center.y = generatedCoordinates.ordinate;
             }
-            else if(!(cluster.center.x - cluster.radius < 0 || cluster.center.x + cluster.radius > frameWidth || cluster.center.y - cluster.radius < 0 || cluster.center.y + cluster.radius > frameHeight)) {
-                // Il cluster non si trova al di fuori del canvas 
-                centralCluster = clusters[0];
-                break;
+            else if(overlaps && subAttempts == 99) {
+              cluster.center.x = -200;
+              cluster.center.y = -200;
             }
             else {
-            centralCluster = clusters[0];
-
-            
+              centralCluster = cluster;
+              break;
+            }
           }
         }
       }
     }
   }
-
-      // Cambio il cluster precedente
-      //previousCluster = cluster;
-    }
-  }
+}
 
 
 /**
  * Funzione per la generazione di una coordinata casuale sulla circonferenza esterna del cerchio generato dal centro e dal raggio
- * @param {*} center Le coordinate del centro del cluster precedente
- * @param {*} radius La somma tra il raggio del cluster precedente e quello del cluster attuale, con un margine di 10
+ * L'algoritmo non deve mai far uscire dal range del valore maggiore e minore della y del cluster centrale
+ * @param {*} center Le coordinate del centro del cluster centrale
+ * @param {*} radius La somma tra il raggio del cluster centrale e quello del cluster attuale, con un margine di 10
  * @returns Coordinata casuale sulla circonferenza esterna del cerchio
  */
 function generateRandomCoordinatesOnOuterCircle(center, radius) {
@@ -302,6 +245,7 @@ function generateRandomCoordinatesOnOuterCircle(center, radius) {
   if(rightAbscissaRange > frameWidth) {
     rightAbscissaRange = center.x - radius;
   }
+
   // Trovo una ascissa casuale all'interno del range
   let abscissa = random(leftAbscissaRange, rightAbscissaRange);
   // Calcolo l'ordinata in base all'ascissa
