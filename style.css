@@ -212,6 +212,11 @@ a:visited {
   cursor: pointer;
 }
 
+.region-label.selected {
+  background-color: white;
+  color: #343038;
+  font-weight: 500;
+}
 
 #box {
   width: 175px;

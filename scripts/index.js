@@ -49,6 +49,34 @@ function pFindRegionIndex(regionName) {
     return regions.indexOf(regionName);
 }
 
+
+//PARTE INSERITA DA SIMO DA UNIRE ALLA FUNZIONE PRIMA//
+
+ function pRegionClicked(e) {
+    // Ottieni l'elemento della regione cliccata
+    const clickedRegion = e.target;
+
+    // Rimuovi la classe 'selected' da tutte le altre regioni
+    const allRegionLabels = document.querySelectorAll('.region-label');
+    allRegionLabels.forEach(region => {
+        region.classList.remove('selected'); // Rimuove la classe 'selected' (simulando "hover off")
+    });
+
+    // Aggiungi la classe 'selected' all'elemento cliccato (simulando "hover on")
+    clickedRegion.classList.add('selected');
+
+    // Ottieni e aggiorna il nome della regione selezionata nel button
+    selectedRegion = clickedRegion.value;
+    let pSelection = document.getElementById("bottom-selected-region");
+    pSelection.value = selectedRegion;
+    pSelection.innerHTML = selectedRegion;
+}
+
+
+
+
+
+
 /**
  * Funzione per mostrare il dropdown per la selezione della regione
  * @param {Event} e Evento del click
@@ -92,4 +120,3 @@ function pToggleComparisonButton(e) {
 function pComparisonClicked(e) {
     selectedComparison = e.target.value;
 }
-
