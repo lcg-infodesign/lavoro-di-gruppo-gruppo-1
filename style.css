@@ -232,7 +232,7 @@ a:visited {
 }
 
 .region-label:hover {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.708);
   color: #343038;
   transition: 0.3s;
   font-weight: 500;
@@ -269,11 +269,15 @@ a:visited {
   overflow-y: scroll;
   padding-right: 6px; /* Crea spazio tra il contenuto e la barra laterale */
   box-sizing: content-box;
+  width: 100%;
+  scrollbar-width: none; /* Imposta la larghezza della barra di scorrimento */
+  scrollbar-color: transparent; /* Colore per il "thumb" e per il background */
 }
 
 #regions-list::-webkit-scrollbar {
   height: 5px;
   width: 7px;
+  display: none;
 }
 
 #regions-list::-webkit-scrollbar-thumb {
@@ -284,6 +288,11 @@ a:visited {
  #regions-list::-webkit-scrollbar-thumb:hover {
   background-color: white;
   transition: 0.2s;
+  cursor: pointer;
+ }
+
+ #region-list:hover{
+  scrollbar-color: white #807d83;
  }
 
 .single-region{
