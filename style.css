@@ -43,6 +43,23 @@ body {
   font-size: 14px;
   margin: 0;
 }
+
+#intro-right {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+#intro-right h1 {
+  margin: 0;
+  font-size: 5rem;
+  color: #b8e557;
+}
+#intro-right p {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
 #balls {
   width: 40%;
   position: relative;
@@ -66,22 +83,6 @@ body {
   bottom: -60px;
   width: 30px;
 }
-#intro-right {
-  width: 65%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-#intro-right h1 {
-  margin: 0;
-  font-size: 5rem;
-  color: #b8e557;
-}
-#intro-right p {
-  font-size: 1.5rem;
-  margin: 0;
-}
-
 
 a {
   color: #B8E558;
@@ -114,6 +115,7 @@ a:visited {
   justify-content: left;
   align-items: center;
 }
+
 #mtoggle {
   display: flex;
   flex-direction: row;
@@ -139,6 +141,7 @@ a:visited {
   align-items: center;
   cursor: pointer;
 }
+
 .m-selected {
   background-color: #252129;
   border-radius: 20px;
@@ -146,6 +149,7 @@ a:visited {
   margin: 0 5px;
   height: calc(100% - 10px);
 }
+
 .demo-circle {
   width: 16px;
   display: inline-block;
@@ -158,6 +162,7 @@ a:visited {
   font-size: 16px;
   line-height: 16px;
 }
+
 #heading {
   color: white;
   width: 90%;
@@ -192,6 +197,7 @@ a:visited {
 #sketch-container {
   display: block;
 }
+
 #regions-container {
   display: flex;
   flex-direction: row;
@@ -199,7 +205,6 @@ a:visited {
   align-items: center;
   width: 100%;
   margin-bottom: 50px;
-
 }
 .regions-select {
   font-family: 'forma-djr-text', sans-serif;
@@ -215,8 +220,8 @@ a:visited {
   color: #343038;
   margin-top: 5px;
   width: 100%;
-
 }
+
 .region-label {
   border: none;
   font-size: 16px;
@@ -230,15 +235,13 @@ a:visited {
   font-weight: 400;
   transition: 0.2s;
 }
-
 .region-label:hover {
-  background-color: rgba(255, 255, 255, 0.708);
+  background-color: white;
   color: #343038;
   transition: 0.3s;
   font-weight: 500;
   cursor: pointer;
 }
-
 .region-label.selected {
   background-color: white;
   color: #343038;
@@ -264,6 +267,7 @@ a:visited {
   margin-top: -161px;
   background-color: rgba(61, 61, 61, 0.851);
 }
+
 #regions-list {
   height: 150px;
   overflow-y: scroll;
@@ -273,26 +277,23 @@ a:visited {
   scrollbar-width: none; /* Imposta la larghezza della barra di scorrimento */
   scrollbar-color: transparent; /* Colore per il "thumb" e per il background */
 }
-
 #regions-list::-webkit-scrollbar {
   height: 5px;
   width: 7px;
   display: none;
 }
-
 #regions-list::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #807d83;
 }
-
  #regions-list::-webkit-scrollbar-thumb:hover {
   background-color: white;
   transition: 0.2s;
   cursor: pointer;
- }
+}
 
- #region-list:hover{
-  scrollbar-color: white #807d83;
+#region-list:hover{
+ scrollbar-color: white #807d83;
  }
 
 .single-region{
@@ -301,10 +302,8 @@ a:visited {
   padding: 10px 20px;
   border-radius: 13px;
   cursor: pointer;
-  color: rgb(255, 255, 255);
-  
+  color: rgb(255, 255, 255); 
 }
-
 .single-region:hover{
   background-color: rgba(0, 0, 0, 0.362);
 }
@@ -321,11 +320,9 @@ a:visited {
   cursor: pointer;
   margin: 0 10px;
 }
-
 #comparison-button.rotated {
   transform: rotate(45deg);
 }
-
 #comparison-button {
   transition: 0.5s ease;
 }
@@ -403,7 +400,7 @@ a:visited {
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
-  max-width: 200px; /* Adjust as needed for desired width */
+  max-width: 200px;
   display: flex;
   align-items: center;
   gap: 5px;
