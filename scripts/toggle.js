@@ -47,12 +47,10 @@ function tToggleView(selected) {
     if (selected === 0) {
         leftToggle.classList.add("m-selected");  // Aggiungo la classe m-selected al pulsante sinistro
         rightToggle.classList.remove("m-selected");  // Rimuovo la classe m-selected dal pulsante destro
-        document.getElementById("topballs").src="assets/images/Gif_spazivuoti_topleft_verde.gif"
-        document.getElementById("bottomballs").src="assets/images/Gif_spazivuoti_bottomright_verde.gif"
+        document.getElementById("topballs").src="assets/images/Gif_spazivuoti_bottomright_verde.gif"
         document.getElementById("link").style.color="#B8E557"
         document.getElementById("titolo").style.color="#B8E557"
         document.getElementsByClassName("demo-circle")[0].style.backgroundColor="#B8E557"
-        document.getElementById("cerchio-percentuale").textContent="Ogni cerchio rappresenta una spesa di 100 milioni di Euro"
         document.getElementById("demo-value").textContent="100.000.000€"
 
         
@@ -61,12 +59,10 @@ function tToggleView(selected) {
     } else {  // Se il pulsante destro è selezionato (selected = 1)
         rightToggle.classList.add("m-selected");  // Aggiungo la classe m-selected al pulsante destro
         leftToggle.classList.remove("m-selected");  // Rimuov la classe m-selected dal pulsante sinistro
-        document.getElementById("topballs").src="assets/images/Gif_spazivuoti_topleft_viola.gif"
-        document.getElementById("bottomballs").src="assets/images/Gif_spazivuoti_bottomright_viola.gif"
+        document.getElementById("topballs").src="assets/images/Gif_spazivuoti_bottomright_viola.gif"
         document.getElementById("link").style.color="#A757E5"
         document.getElementById("titolo").style.color="#A757E5"
         document.getElementsByClassName("demo-circle")[0].style.backgroundColor="#A757E5"
-        document.getElementById("cerchio-percentuale").textContent="Ogni cerchio rappresenta una percentuale fissa del valore speso"
         document.getElementById("demo-value").textContent="%"
 
 

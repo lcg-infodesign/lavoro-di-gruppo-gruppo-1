@@ -40,7 +40,7 @@ body {
   justify-content: space-between;
 }
 #intro-left p {
-  font-size: 14px;
+  font-size: 16px;
   margin: 0;
 }
 
@@ -59,7 +59,6 @@ body {
   font-size: 1.5rem;
   margin: 0;
 }
-
 
 #intro-right {
   width: 65%;
@@ -82,17 +81,17 @@ body {
   position: relative;
   top: -100px;
 }
+
 #topballs{
   position: relative;
-  width: 150px;
-  top: 28px;
+  width: 202px;
+  top: 15px;
 }
 #bottomballs{
   position: absolute;
   right: 10%;
   width: 110px;
-  top: 77%;
-  rotate: 90deg;
+  top: 74%;
 
 }
 #rightballs{
@@ -102,10 +101,9 @@ body {
   width: 30px;
 }
 
-
 a {
   color: #B8E558;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 a:hover{
@@ -134,7 +132,6 @@ a:visited {
   justify-content: left;
   align-items: center;
 }
-
 
 #mtoggle {
   display: flex;
@@ -170,7 +167,6 @@ a:visited {
   height: calc(100% - 10px);
 }
 
-
 .demo-circle {
   width: 16px;
   display: inline-block;
@@ -183,7 +179,6 @@ a:visited {
   font-size: 16px;
   line-height: 16px;
 }
-
 
 #heading {
   color: white;
@@ -384,7 +379,6 @@ a:visited {
   font-size: 2rem;
 }
 
-
 .description {
   font-size: 1em;
   text-align: right;
@@ -396,13 +390,36 @@ a:visited {
   align-items: center;
   gap: 5px;
 }
+
 .description .circle {
   width: 10px;
   height: 10px;
   background: white;
   border-radius: 50%;
 }
+
 .description .equals {
   font-size: 1em;
   font-weight: bold;
+}
+
+#fixed-toggle{
+  position: fixed;
+  bottom: 5%;
+}
+
+#testo-sopra-toggle{
+  width: 43%; 
+  position: relative; 
+  bottom: 17%;
+}
+
+#colophon{
+  font-size: 12px;
+  position: relative;
+}
+
+#cerchio-percentuale{
+  position: relative;
+  left: -23.6px;
 }
