@@ -84,14 +84,15 @@ body {
 }
 #topballs{
   position: relative;
-  width: 240px;
+  width: 160px;
   top: 28px;
 }
 #bottomballs{
   position: absolute;
-  right: 5%;
-  width: 180px;
-  top: 82.5%;
+  right: 10%;
+  width: 100px;
+  top: 77%;
+  rotate: 90deg;
 
 }
 #rightballs{
