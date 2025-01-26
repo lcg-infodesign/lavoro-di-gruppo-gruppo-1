@@ -57,7 +57,6 @@ function setup() {
   canvas.parent("sketch-container");
   canvas.loadPixels();
 
-  //frameRate(60);
   noLoop();
 
   expenses = data.getObject();
@@ -130,7 +129,7 @@ function setup() {
   // Popolo l'array dei cluster, creando un cluster per ogni categoria di spesa
   for(let i = 0; i < categories.length; i++) {
     let cluster = {
-      center: { x: frameWidth / 2, y: frameHeight / 2 },
+      center: { x: -100, y: -100},
       color: categoriesColors[i],
       radius: 100,
       agentCount: floor(expensesPerCategory[i] / 100000000),
@@ -140,35 +139,51 @@ function setup() {
     clusters.push(cluster);
   }
 
+  // Ordino i cluster in base al numero di agenti in ordine decrescente
+  clusters.sort((a, b) => b.agentCount - a.agentCount);
+
+  let remainingSurface = frameWidth * frameHeight;
+
   clusters.forEach(cluster => {
     // Ridimensiono raggio cluster in base a numero agenti
-    let agentsArea = cluster.agentCount * (agentRadius * agentRadius);
+    let agentsArea = cluster.agentCount * (4 * agentRadius * agentRadius) * 1.1;
     let newRadius = sqrt(agentsArea / PI);
     cluster.radius = newRadius;
 
+    // Calcolo la probabilità di trovare spazio per questo cluster
+    let clusterSurface = PI * cluster.radius * cluster.radius;
+    let probability = clusterSurface / remainingSurface;
+    // Sottraggo superficie occupata dal cluster
+    remainingSurface -= PI * cluster.radius * cluster.radius;
+
+    console.log(`Cluster ${cluster.color} probability: ${probability * 100}`);
+
     // Creo un nuovo centro casuale che non esca dal canvas
-    cluster.center.x = random((frameWidth * 0.05 + (cluster.radius * 2)), frameWidth - (cluster.radius * 2));
+    cluster.center.x = random((cluster.radius), frameWidth - (cluster.radius * 2));
     cluster.center.y = random((10 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
 
     // Controllo che il cluster non si sovrapponga a cluster esistenti
-    for(let attempts = 0; attempts < 100; attempts++) {
+    for(let attempts = 0; attempts < 100000; attempts++) {
       let overlaps = clusters.some(c => 
-        p5.Vector.dist(createVector(cluster.center.x, cluster.center.y), createVector(c.center.x, c.center.y)) < (cluster.radius + c.radius)
+        c != cluster && clusterDistance(c.center, cluster.center) < (c.radius + cluster.radius + 10)
       );
       if (overlaps) {
         // Creo un nuovo centro che non esca dal canvas
-        cluster.center.x = random((frameWidth * 0.05 + (cluster.radius * 2)), frameWidth - (cluster.radius * 2));
+        cluster.center.x = random((cluster.radius), frameWidth - (cluster.radius * 2));
         cluster.center.y = random((10 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
       }
       else {
         break;
       }
-      attempts++;
+      if(attempts == 99999) {
+        cluster.color = [255, 0, 0];
+        console.error('Il cluster non ha trovato posto');
+      }
     }
 
     for(let i = 0; i < cluster.agentCount; i++) {
       let angle = random(TWO_PI);
-      let radius = random(0, cluster.radius * 0.9);
+      let radius = random(0, cluster.radius) - agentRadius;
       
       let x = cluster.center.x + cos(angle) * radius;
       let y = cluster.center.y + sin(angle) * radius;
@@ -176,6 +191,16 @@ function setup() {
       agents.push(new ClusterAgent(x, y, cluster));
     }
   });
+}
+
+/**
+ * Funzione che calcola la distanza tra il centro di due cluster
+ * @param a Centro del primo cluster
+ * @param b Centro del secondo cluster
+ * @returns {number} Distanza tra i due cluster
+ */
+function clusterDistance(a, b) {
+  return dist(a.x, a.y, b.x, b.y);
 }
 
 function draw() {
@@ -244,6 +269,7 @@ function drawComparisonView() {
  * Funzione per disegnare i cerchi della visualizzazione principale
  */
 function drawMainView() {
+  // Disegno i cluster
   clusters.forEach(cluster => {
     fill("grey");
     stroke(cluster.color[0], cluster.color[1], cluster.color[2], 50);
