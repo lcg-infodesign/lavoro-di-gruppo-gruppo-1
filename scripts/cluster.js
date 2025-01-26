@@ -16,7 +16,7 @@
     boundaryStiffness: 0.5    // Strength of boundary enforcement
  */
 
-let agentRadius = 3;
+let agentRadius = 3; // Valore di default per il raggio degli agenti
   
 class ClusterAgent {
     constructor(x, y, cluster) {
