@@ -57,7 +57,7 @@ function setup() {
   canvas.parent("sketch-container");
   canvas.loadPixels();
 
-  noLoop();
+  frameRate(60);
 
   expenses = data.getObject();
   expensesLength = Object.keys(expenses).length;
@@ -128,13 +128,21 @@ function setup() {
 
   // Popolo l'array dei cluster, creando un cluster per ogni categoria di spesa
   for(let i = 0; i < categories.length; i++) {
+    // Calcolo il numero degli agenti
+    let agentSum =  floor(expensesPerCategory[i] / 100000000);
+
+    // Calcolo raggio del cluster in base al numero di agenti
+    let agentsArea = agentSum * (4 * agentRadius * agentRadius) * 1.1;
+    let newRadius = sqrt(agentsArea / PI);
+    
     let cluster = {
-      center: { x: -100, y: -100},
+      center: createVector(random(newRadius, frameWidth - newRadius), random(newRadius, frameHeight - newRadius)),
       color: categoriesColors[i],
-      radius: 100,
-      agentCount: floor(expensesPerCategory[i] / 100000000),
+      radius: newRadius,
+      agentCount: agentSum,
       attractionStrength: 0.3,
-      boundaryStiffness: 0.5
+      boundaryStiffness: 0.5,
+      velocity: createVector(0, 0)
     }
     clusters.push(cluster);
   }
@@ -142,44 +150,41 @@ function setup() {
   // Ordino i cluster in base al numero di agenti in ordine decrescente
   clusters.sort((a, b) => b.agentCount - a.agentCount);
 
-  let remainingSurface = frameWidth * frameHeight;
-
-  clusters.forEach(cluster => {
-    // Ridimensiono raggio cluster in base a numero agenti
-    let agentsArea = cluster.agentCount * (4 * agentRadius * agentRadius) * 1.1;
-    let newRadius = sqrt(agentsArea / PI);
-    cluster.radius = newRadius;
-
-    // Calcolo la probabilità di trovare spazio per questo cluster
-    let clusterSurface = PI * cluster.radius * cluster.radius;
-    let probability = clusterSurface / remainingSurface;
-    // Sottraggo superficie occupata dal cluster
-    remainingSurface -= PI * cluster.radius * cluster.radius;
-
-    console.log(`Cluster ${cluster.color} probability: ${probability * 100}`);
-
-    // Creo un nuovo centro casuale che non esca dal canvas
-    cluster.center.x = random((cluster.radius), frameWidth - (cluster.radius * 2));
-    cluster.center.y = random((10 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
-
-    // Controllo che il cluster non si sovrapponga a cluster esistenti
-    for(let attempts = 0; attempts < 100000; attempts++) {
-      let overlaps = clusters.some(c => 
-        c != cluster && clusterDistance(c.center, cluster.center) < (c.radius + cluster.radius + 10)
-      );
-      if (overlaps) {
-        // Creo un nuovo centro che non esca dal canvas
-        cluster.center.x = random((cluster.radius), frameWidth - (cluster.radius * 2));
-        cluster.center.y = random((10 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
-      }
-      else {
-        break;
-      }
-      if(attempts == 99999) {
-        cluster.color = [255, 0, 0];
-        console.error('Il cluster non ha trovato posto');
+  for (let i = 0; i < clusters.length; i++) {
+    let cluster = clusters[i];
+    // Applico il principio di gravità a tutti i cerchi
+    for (let j = 0; j < clusters.length; j++) {
+      if (i !== j) {
+        let other = clusters[j];
+        let force = p5.Vector.sub(other.center, cluster.center);
+        let distance = constrain(force.mag(), cluster.radius + other.radius, 200);
+        force.setMag(1 / (distance * distance)); // Gravitational force
+        cluster.velocity.add(force);
       }
     }
+
+    // Update position with velocity
+    cluster.center.add(cluster.velocity);
+
+    // Keep within canvas bounds
+    cluster.center.x = constrain(cluster.center.x, cluster.radius, frameWidth - cluster.radius);
+    cluster.center.y = constrain(cluster.center.y, cluster.radius, frameHeight - cluster.radius);
+
+    // Collision handling with other circles
+    for (let j = 0; j < clusters.length; j++) {
+      if (i !== j) {
+        let other = clusters[j];
+        let overlap = (cluster.radius + other.radius) - dist(cluster.center.x, cluster.center.y, other.center.x, other.center.y);
+        if (overlap > 0) {
+          let push = p5.Vector.sub(cluster.center, other.center).normalize().mult(overlap / 2);
+          cluster.center.add(push);
+          other.center.sub(push);
+        }
+      }
+    }
+
+    // Apply damping to slow down velocity
+    cluster.velocity.mult(0.95);
 
     for(let i = 0; i < cluster.agentCount; i++) {
       let angle = random(TWO_PI);
@@ -187,10 +192,130 @@ function setup() {
       
       let x = cluster.center.x + cos(angle) * radius;
       let y = cluster.center.y + sin(angle) * radius;
-
+  
       agents.push(new ClusterAgent(x, y, cluster));
     }
-  });
+  }
+  /*
+  // Salvo le coordinate del cluster precedente a quello calcolato
+  let previousCluster = clusters[0];
+
+  for(let i = 0; i < clusters.length; i++) {
+    let cluster = clusters[i];
+    // Ridimensiono raggio cluster in base a numero agenti
+    let agentsArea = cluster.agentCount * (4 * agentRadius * agentRadius) * 1.1;
+    let newRadius = sqrt(agentsArea / PI);
+    cluster.radius = newRadius;
+
+    // Se è il primo cluster lo posiziono al centro
+    if(i == 0) {
+      cluster.center.x = frameWidth / 2;
+      cluster.center.y = frameHeight / 2;
+    }
+    else if(i == 1) {
+      // Imposto l'ascissa del cluster completamente a destra di quello precedente
+      cluster.center.x = previousCluster.center.x + previousCluster.radius + cluster.radius + 10;
+      // Imposto l'ordinata del cluster uguale a quello precedente
+      cluster.center.y = previousCluster.center.y;
+    }
+    else if(i == 2) {
+      // Imposto l'ascissa del cluster completamente a sinistra di quella segnata come precedente
+      cluster.center.x = previousCluster.center.x - previousCluster.radius - cluster.radius - 10;
+      // Imposto l'ordinata del cluster uguale a quello precedente
+      cluster.center.y = previousCluster.center.y;
+      // Cambio il cluster precedente
+      previousCluster = cluster;
+    }
+    else if (i != 0) {
+      // Genero nuove coordinate vicine al cluster precedente
+      /*let generatedCoordinates = generateRandomCoordinatesOnOuterCircle(previousCluster.center, cluster.radius + previousCluster.radius + 10);
+
+      // Imposto il centro del cluster
+      cluster.center.x = generatedCoordinates.abscissa;
+      cluster.center.y = generatedCoordinates.ordinate;
+
+      // Controllo che il cluster non si sovrapponga a cluster esistenti
+      for(let attempts = 0; attempts < 100; attempts++) {
+        let overlaps = clusters.some(c => 
+          c != cluster && clusterDistance(c.center, cluster.center) < (c.radius + cluster.radius + 5)
+        );
+        if (overlaps) {
+          // Creo un nuovo centro che non esca dal canvas
+          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(previousCluster.center, cluster.radius + previousCluster.radius + 10);
+          cluster.center.x = generatedCoordinates.abscissa;
+          cluster.center.y = generatedCoordinates.ordinate;
+        }
+        else {
+          break;
+        }
+        if(attempts == 999) {
+          cluster.color = [255, 0, 0];
+          console.error('Il cluster non ha trovato posto');
+        }
+      }
+
+      // Cambio il cluster precedente
+      previousCluster = cluster;
+    }
+
+      // Creo un nuovo centro casuale che non esca dal canvas
+      cluster.center.x = random((cluster.radius), frameWidth - (cluster.radius * 2));
+      cluster.center.y = random((10 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
+
+      // Controllo che il cluster non si sovrapponga a cluster esistenti
+      for(let attempts = 0; attempts < 1000; attempts++) {
+        let overlaps = clusters.some(c => 
+          c != cluster && clusterDistance(c.center, cluster.center) < (c.radius + cluster.radius + 10)
+        );
+        if (overlaps) {
+          // Creo un nuovo centro che non esca dal canvas
+          cluster.center.x = random((cluster.radius), frameWidth - (cluster.radius * 2));
+          cluster.center.y = random((10 + (cluster.radius * 2)), frameHeight - (cluster.radius * 2));
+        }
+        else {
+          break;
+        }
+        if(attempts == 999) {
+          cluster.color = [255, 0, 0];
+          console.error('Il cluster non ha trovato posto');
+        }
+      }*/
+}
+
+/**
+ * Funzione per la generazione di una coordinata casuale sulla circonferenza esterna del cerchio generato dal centro e dal raggio
+ * @param {*} center Le coordinate del centro del cluster precedente
+ * @param {*} radius La somma tra il raggio del cluster precedente e quello del cluster attuale, con un margine di 10
+ * @returns Coordinata casuale sulla circonferenza esterna del cerchio
+ */
+function generateRandomCoordinatesOnOuterCircle(center, radius) {
+  // Creo un il raggio che userò per calcolare la circonferenza esterna
+  let leftAbscissaRange = center.x - radius;
+  let rightAbscissaRange = center.x + radius;
+
+  // Controllo che l'ascissa sommando il raggio non esca dal canvas
+  if(leftAbscissaRange < 0) {
+    leftAbscissaRange = center.x + radius;
+  }
+  if(rightAbscissaRange > frameWidth) {
+    rightAbscissaRange = center.x - radius;
+  }
+  // Trovo una ascissa casuale all'interno del range
+  let abscissa = random(leftAbscissaRange, rightAbscissaRange);
+  // Calcolo l'ordinata in base all'ascissa
+  let ordinate = sqrt(pow(radius, 2) - pow(abscissa - center.x, 2));
+
+  // Calcolo il quadrante in cui si trova il punto
+  if(random() < 0.5) {
+    ordinate = center.y + ordinate;
+  }
+  else {
+    ordinate = center.y - ordinate;
+  }
+  
+  // Controllo che l'ordinata generata 
+
+  return { abscissa, ordinate };
 }
 
 /**
@@ -272,14 +397,13 @@ function drawMainView() {
   // Disegno i cluster
   clusters.forEach(cluster => {
     fill("grey");
-    stroke(cluster.color[0], cluster.color[1], cluster.color[2], 50);
     ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
     noFill();
   });
   // Simulation loop
   for (let agent of agents) {
-    agent.applyClusterBehaviors(agents);
-    agent.update();
+    //agent.applyClusterBehaviors(agents); // TODO: Fare un controllo di fattibilità per vedere se è possibile applicare questa funzione
+    //agent.update();
     agent.display();
   }
   /*
