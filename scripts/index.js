@@ -12,25 +12,31 @@
  * Funzione per rappresentare i label delle regioni dopo che sono state caricate dallo sketch
  */
 function pDrawLabels() {
-    // Salvo il div che conterrà i label delle regioni
     let pRegionsList = document.getElementById('regions-list');
-    // Salvo il div che conterrà i label delle regioni per il confronto
-    let pComparisonDropdown = document.getElementById('comparison-dropdown');
+    let pComparisonDropdown = document.getElementById('box-2');
 
-    // Creo un option per ogni regione
     for (let i = 0; i < regions.length; i++) {
+        // First dropdown buttons
         let regionButton = document.createElement('button');
         regionButton.className = 'region-label';
         regionButton.value = regions[i];
         regionButton.innerHTML = regions[i];
         regionButton.onclick = pRegionClicked;
         pRegionsList.appendChild(regionButton);
+
+        // Comparison dropdown buttons
+        let comparisonButton = document.createElement('button');
+        comparisonButton.className = 'region-label';
+        comparisonButton.value = regions[i];
+        comparisonButton.innerHTML = regions[i];
+        comparisonButton.onclick = pComparisonClicked;
+        pComparisonDropdown.appendChild(comparisonButton);
     }
 
-    // Imposto "Tutte le regioni" come regione selezionata
     let pAllRegionsLabel = document.getElementsByClassName('region-label')[0];
     pAllRegionsLabel.classList.add('selected-label');
 }
+
 
 /**
  * Funzione che viene chiamata quando un label di regione viene cliccato
@@ -51,7 +57,6 @@ function pFindRegionIndex(regionName) {
 
 
 //PARTE INSERITA DA SIMO DA UNIRE ALLA FUNZIONE PRIMA//
-
  function pRegionClicked(e) {
     // Ottieni l'elemento della regione cliccata
     const clickedRegion = e.target;
