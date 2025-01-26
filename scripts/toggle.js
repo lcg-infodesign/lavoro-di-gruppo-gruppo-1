@@ -52,6 +52,8 @@ function tToggleView(selected) {
         document.getElementById("link").style.color="#B8E557"
         document.getElementById("titolo").style.color="#B8E557"
         document.getElementsByClassName("demo-circle")[0].style.backgroundColor="#B8E557"
+        document.getElementById("cerchio-percentuale").textContent="Ogni cerchio rappresenta una spesa di 100 milioni di Euro"
+        document.getElementById("demo-value").textContent="100.000.000€"
 
         
 
@@ -64,6 +66,10 @@ function tToggleView(selected) {
         document.getElementById("link").style.color="#A757E5"
         document.getElementById("titolo").style.color="#A757E5"
         document.getElementsByClassName("demo-circle")[0].style.backgroundColor="#A757E5"
+        document.getElementById("cerchio-percentuale").textContent="Ogni cerchio rappresenta una percentuale fissa del valore speso"
+        document.getElementById("demo-value").textContent="%"
+
+
 
 
 
