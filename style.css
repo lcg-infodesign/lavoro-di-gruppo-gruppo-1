@@ -61,14 +61,22 @@ body {
   font-size: 1.5rem;
   margin: 0;
 }
+
+
 a {
   color: #B8E558;
   text-decoration: none;
 }
 
-a:visited {
-  color: #B8E558;
+a:hover{
+  color: #b8e558d3;
 }
+
+a:visited {
+  color: #b8e558d3;
+}
+
+
 #logo-polimi {
   width: 150px;
   margin-bottom: 5px;
@@ -201,7 +209,6 @@ a:visited {
   color: white;
   font-weight: 400;
   transition: 0.2s;
-
 }
 
 .region-label:hover {
@@ -251,12 +258,11 @@ a:visited {
 
 #regions-list::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: white;
-  
+  background-color: #807d83;
 }
 
  #regions-list::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(170, 170, 170);
+  background-color: white;
   transition: 0.2s;
  }
 
