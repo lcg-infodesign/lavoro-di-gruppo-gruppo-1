@@ -396,8 +396,8 @@ function drawComparisonView() {
 function drawMainView() {
   // Disegno i cluster
   clusters.forEach(cluster => {
-    //console.log(cluster.center.x, cluster.center.y, cluster.radius * 2);
-    fill("grey");
+    //fill("grey");
+    noFill();
     ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
     noFill();
   });

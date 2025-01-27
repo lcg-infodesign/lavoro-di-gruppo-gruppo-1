@@ -28,7 +28,6 @@ class ClusterClass {
 
     display() {
         noStroke();
-        fill(this.baseColor);
         ellipse(this.position.x, this.position.y, this.radius * 2);
     }
 }
@@ -56,10 +55,10 @@ class ParticleClass {
         let boundaryForce = this.stayInParent();
     
         centerAttraction.mult(0.3);
-        //separation.mult(0.8);  // Increased separation force
+        //separation.mult(0.1);  // Increased separation force
         boundaryForce.mult(0.8);
     
-        this.acceleration.add(centerAttraction);
+        //this.acceleration.add(centerAttraction);
         //this.acceleration.add(separation);
         this.acceleration.add(boundaryForce);
     }
@@ -77,20 +76,20 @@ class ParticleClass {
     }
   
     separate(particles) {
-        let desiredSeparation = this.radius * 4;  // Increased separation distance
+        let desiredSeparation = this.radius;  // Increased separation distance
         let sum = createVector(0, 0);
         let count = 0;
     
         for (let other of particles) {
             let d = p5.Vector.dist(this.position, other.position);
             if (d > 0 && d < desiredSeparation) {
-            let diff = p5.Vector.sub(this.position, other.position);
-            diff.normalize();
-            // Stronger repulsion for very close particles
-            let strength = map(d, 0, desiredSeparation, 3, 0.5);
-            diff.mult(strength);
-            sum.add(diff);
-            count++;
+                let diff = p5.Vector.sub(this.position, other.position);
+                diff.normalize();
+                // Stronger repulsion for very close particles
+                let strength = map(d, 0, desiredSeparation, 3, 0.5);
+                diff.mult(strength);
+                sum.add(diff);
+                count++;
             }
         }
   
