@@ -207,7 +207,7 @@ background: linear-gradient(170.5deg, rgb(255, 255, 255) 16.96%, rgba(255, 255, 
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 20vw;
+  margin-top: 50vw;
 }
 #sketch-container {
   display: block;
@@ -558,7 +558,7 @@ flex-direction: column;
 
 #cerchio7{
   position:absolute;
-  top:135vh;
+  top:145vh;
   left:8vw;
   border-radius: 50%;
   background-color:#2EA398;
@@ -615,11 +615,12 @@ flex-direction: column;
 }
 
 #vetro2{
-  position: relative;
-  top: 14vh;
+  position: absolute;
+  top: 120vh;
+  left: 5vw;
   margin: auto;
-  width: 35vw;
-  height: 30vh;
+  width: 25%;
+  height: auto;
   padding-left: 3.5vw;
   padding-right: 3.5vw;
   padding-bottom: 3vw;
@@ -644,18 +645,31 @@ flex-direction: column;
 }
 
 #vetro3{
-  position: sticky;
-  width: 200px;
-  height: auto;
-  top: 0.5vh;
+  position: absolute;
+  top: 160vh;
+  right: 5vw;
   margin: auto;
-  padding-top: 1vw;
-  padding-left: 1vw;
-  padding-right: 1vw;
-  padding-bottom: 1vw;
-  font-family: "semplicitapro", sans-serif;
-  font-size: 2vh;
-  font-weight: 500;
+  width: 25%;
+  height: auto;
+  padding-left: 3.5vw;
+  padding-right: 3.5vw;
+  padding-bottom: 3vw;
+  padding-top: 3vw;
+
+    
+  /* Rectangle 25 */
+background: linear-gradient(170.5deg, rgba(255, 255, 255, 0.1) 16.96%, rgba(255, 255, 255, 0.02) 87.84%);
+backdrop-filter: blur(10px);
+/* Note: backdrop-filter has minimal browser support */
+border-radius: 20px;
+box-shadow: 2px 2px 20px 0px rgba(255, 255, 255, 0.156) inset;
+
+border: solid, 1px, rgb(79, 79, 79);
+font-family: "semplicitapro", sans-serif;
+font-size: 2vh;
+display: flex;
+flex-direction: column;
+  
 }
 
 #euro{
