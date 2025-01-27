@@ -160,11 +160,8 @@ function setup() {
     rightComparisonClusters.push(structuredClone(cluster));
   }
 
-  console.log(clusters);
-
   // Ordino i cluster in base al numero di agenti in ordine decrescente
   clusters.sort((a, b) => b.agentCount - a.agentCount);
-  rightComparisonClusters.sort((a, b) => b.agentCount - a.agentCount);
   
   // Salvo le coordinate del cluster precedente a quello calcolato
   let centralCluster = clusters[0];
@@ -393,6 +390,7 @@ function drawComparisonView() {
   for(let i = 0; i < leftComparisonClusters.length; i++) {
     let cluster = leftComparisonClusters[i];
     // Disegno il cluster
+    noFill();
     ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
     noFill();
   }
@@ -405,11 +403,20 @@ function drawComparisonView() {
   }
   
   /** Visualizzazione di destra */
-  rightComparisonClusters.forEach(cluster => {
-    fill("green");
+  for(let i = 0; i < rightComparisonClusters.length; i++) {
+    let cluster = rightComparisonClusters[i];
+    // Disegno il cluster
+    noFill();
     ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
     noFill();
-  });
+  }
+  for(let i = 0; i < rightComparisonAgents.length; i++) {
+    let agent = rightComparisonAgents[i];
+    agent.applyBehaviors(rightComparisonAgents);
+    agent.update();
+    agent.setColored(true);
+    agent.display();
+  }
   
 }
 
@@ -522,6 +529,7 @@ function calculateLeftComparisonClusters() {
         }
       }
     }
+    // 
     // Aggiungo i pallini dei cluster
     for(let i = 0; i < cluster.agentCount; i++) {
       leftComparisonAgents.push(new ParticleClass(cluster));
@@ -533,15 +541,116 @@ function calculateLeftComparisonClusters() {
  * Funzione per calcolare i cluster di destra nella visualizzazione di confronto
  */
 function calculateRightComparisonClusters() {
-  // Cambio la posizione dei cluster per rimanere nella parte destra del canvas
-  let minLeft = frameWidth / 2;
-  let maxRight = frameWidth;
-
-  // Adatto la posizione dei cluster di sinistra
   for(let i = 0; i < rightComparisonClusters.length; i++) {
     let cluster = rightComparisonClusters[i];
-    let newCenter = { x: random(minLeft, maxRight), y: random(0, frameHeight) };
-    cluster.center = newCenter;
+    // Calcolo il numero di agenti al suo interno per la regione selezionata
+    let regionIndex = regions.indexOf(selectedRegion) - 1;
+    let agentSum = 0;
+    // Calcolo gli agenti della categoria i per la regione selezionata
+    if(regionIndex >= 0) {
+      agentSum = floor(regionDataLastYear[regionIndex].data[i].amount / 100000000);
+    }
+    else {
+      agentSum = 0;
+    }
+    cluster.agentCount = agentSum;
+
+    if(agentSum == 0) {
+      cluster.agentCount = 1;
+    }
+
+    // Ridimensiono raggio cluster in base a numero agenti
+    let agentsArea = cluster.agentCount * (4 * agentRadius * agentRadius) * 1.1;
+    let newRadius = sqrt(agentsArea / PI);
+    cluster.radius = newRadius;
+
+    if(cluster.radius < 1 ) {
+      cluster.radius = 1;
+    }
+  }
+
+  // Riordino i cluster in base al numero di agenti
+  rightComparisonClusters.sort((a, b) => b.agentCount - a.agentCount);
+  let centralCluster = rightComparisonClusters[0];
+
+  centralCluster.center.x = frameWidth / 4;
+  centralCluster.center.y = frameHeight / 2;
+
+  // Cambio le coordinate di ogni cluster per rimanere a sinistra e non sovrapporsi
+  for(let i = 0; i < rightComparisonClusters.length; i++) {
+    let cluster = rightComparisonClusters[i];
+    if(i == 0) {
+      cluster.center.x = frameWidth * (3/4);
+      cluster.center.y = frameHeight / 2;
+
+      // Aggiungo i pallini dei cluster
+      for(let k = 0; k < cluster.agentCount; k++) {
+        rightComparisonAgents.push(new ParticleClass(cluster));
+      }
+    }
+    else {
+      // Genero nuove coordinate vicine al cluster centrale
+      let generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 1);
+
+      // Imposto il centro del cluster
+      cluster.center.x = generatedCoordinates.abscissa;
+      cluster.center.y = generatedCoordinates.ordinate;
+
+      // Controllo che il cluster non si sovrapponga a cluster esistenti
+      for(let attempts = 0; attempts < 1000; attempts++) {
+        let overlaps = rightComparisonClusters.some(c => 
+          c != cluster && clusterDistance(c.center, cluster.center) < (c.radius + cluster.radius + 5)
+        );
+        if (overlaps) {
+          // Creo un nuovo centro che non esca dal canvas
+          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 1);
+          cluster.center.x = generatedCoordinates.abscissa;
+          cluster.center.y = generatedCoordinates.ordinate;
+        }
+        else {
+          break;
+        }
+
+        if(attempts == 999) {
+          // Seleziono randomicamente un altro cluster come cluster centrale
+          let randomVar = floor(random(1, i));
+          centralCluster = rightComparisonClusters[randomVar];
+          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 1);
+
+          // Imposto il centro del cluster
+          cluster.center.x = generatedCoordinates.abscissa;
+          cluster.center.y = generatedCoordinates.ordinate;
+
+          // Controllo che il cluster non si sovrapponga a cluster esistenti
+          for(let subAttempts = 0; subAttempts < 100; subAttempts++) {
+            let overlaps = rightComparisonClusters.some(c => 
+              c != cluster && clusterDistance(c.center, cluster.center) < (c.radius + cluster.radius + 5)
+            );
+            if (overlaps && subAttempts < 99) {
+              // Creo un nuovo centro che non esca dal canvas
+              generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 1);
+              cluster.center.x = generatedCoordinates.abscissa;
+              cluster.center.y = generatedCoordinates.ordinate;
+            }
+            else if(overlaps && subAttempts == 99) {
+              cluster.center.x = -200;
+              cluster.center.y = -200;
+              centralCluster = rightComparisonClusters[0];
+              break;
+            }
+            else {
+              centralCluster = rightComparisonClusters[0];
+              break;
+            }
+          }
+        }
+      }
+    }
+    // 
+    // Aggiungo i pallini dei cluster
+    for(let i = 0; i < cluster.agentCount; i++) {
+      rightComparisonAgents.push(new ParticleClass(cluster));
+    }
   }
 }
 
