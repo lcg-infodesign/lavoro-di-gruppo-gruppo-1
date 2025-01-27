@@ -49,6 +49,7 @@ let agents = [];
 
 function preload() {
   data = loadTable('assets/dataset/uscite.csv', 'ssv', 'header');
+
 }
 
 function setup() {
@@ -478,9 +479,9 @@ function showHover(hexColor) {
   let textLength = textWidth(category);
 
   push();
-  fill(backgroundColor);
-  stroke("white");
-  rect(mouseX + 5, mouseY - 55, textLength+20, 50);
+  fill(255, 255, 255, 25);
+  stroke(79, 79, 79);
+  rect(mouseX + 5, mouseY - 55, textLength+20, 50, 8);
   noStroke();
   fill("white");
   text(category, mouseX + 15, mouseY - 30);
