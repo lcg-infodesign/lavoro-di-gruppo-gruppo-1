@@ -22,6 +22,7 @@ class ClusterClass {
     constructor(cluster) {
         this.homeCluster = cluster;
         this.baseColor = cluster.color;
+        this.innerCategoryAmount = cluster.innerCategoryAmount;
 
         this.position = createVector(cluster.center.x, cluster.center.y);
     }

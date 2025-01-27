@@ -152,12 +152,15 @@ function setup() {
       radius: newRadius,
       agentCount: agentSum,
       attractionStrength: 0.3,
-      boundaryStiffness: 0.5
+      boundaryStiffness: 0.5,
+      innerCategoryAmount: expensesPerCategory[i],
     }
     clusters.push(cluster);
     leftComparisonClusters.push(structuredClone(cluster));
     rightComparisonClusters.push(structuredClone(cluster));
   }
+
+  console.log(clusters);
 
   // Ordino i cluster in base al numero di agenti in ordine decrescente
   clusters.sort((a, b) => b.agentCount - a.agentCount);
@@ -354,7 +357,7 @@ function generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, compari
       // Decidi casualmente se andare a sinistra o a destra del centro del cluster centrale
       const direction = Math.random() < 0.5 ? -1 : 1;
       const centerDX = centralCluster.center.x + direction * deltaX;
-      
+
       return { abscissa: centerDX, ordinate: centerDY };
     }
   }
@@ -547,47 +550,39 @@ function calculateRightComparisonClusters() {
  */
 function drawMainView() {
   // Disegno i cluster
+  let clusterIndex = 0;
   clusters.forEach(cluster => {
     noFill();
     ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
     noFill();
-  });
 
-  let selectedRegionIndex = regions.indexOf(selectedRegion);
+    // Trovo i suoi agenti
+    let innerAgents = agents.filter(agent => agent.parent == cluster);
 
-  // Salvo il colore del cluster precedente
-  let previousColor = agents[0].parent.color;
-  let amountSum = 0;
-  let currentCategory = 0;
-  let currentCategoryAmount = regionDataLastYear[selectedRegionIndex].data[0].amount;
-  for(let i = 0; i < agents.length; i++) {
-    let agent = agents[i];
-    agent.applyBehaviors(agents);
-    agent.update();
-    // Controllo che l'agente sia da colorare o no
-    if(selectedRegion == "Tutte le regioni") {
-      agent.setColored(true);
-    }
-    else {
-      if(amountSum < currentCategoryAmount) {
-        agent.setColored(true);
-        amountSum += 100000000;
+    // Controllo quali colorare e quali no
+    let toBeColored = false;
+    let sumAmount = 0;
+    innerAgents.forEach(agent => {
+      if(selectedRegion == "Tutte le regioni") {
+        toBeColored = true;
       }
       else {
-        agent.setColored(false);
-        amountSum += 100000000;
-        if(amountSum >= expensesPerCategory[currentCategory]) {
-          currentCategory++;
-          if(currentCategory < expensesPerCategory.length) {
-            currentCategoryAmount = regionDataLastYear[selectedRegionIndex - 1].data[currentCategory].amount;
-            amountSum = 0;
-          } 
+        if(sumAmount < regionDataLastYear[regions.indexOf(selectedRegion) - 1].data[clusterIndex].amount) {
+          toBeColored = true;
+        }
+        else {
+          toBeColored = false;
         }
       }
-      previousColor = agent.parent.color;
-    }
-    agent.display();
-  }
+      sumAmount += 100000000;
+      agent.applyBehaviors(agents);
+      agent.update();
+      agent.setColored(toBeColored);
+      agent.display();
+    });
+    clusterIndex++;
+  });
+
 }
 
 /**
