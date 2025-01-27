@@ -310,19 +310,19 @@ function generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, compari
       let rightAbscissaRange = centralCluster.center.x + totalRadius;
 
       // Controllo che l'ascissa sommando il raggio non esca dal canvas
-      /*if(leftAbscissaRange <= 0) {
+      if(leftAbscissaRange <= 0) {
         leftAbscissaRange = centralCluster.center.x + centralCluster.radius;
       }
       if(rightAbscissaRange > frameWidth / 2) {
         rightAbscissaRange = centralCluster.center.x - centralCluster.radius;
-      }*/
+      }
 
       // Trovo una ascissa casuale all'interno del range
       let abscissa = random(leftAbscissaRange, rightAbscissaRange);
       let squaredDistance = Math.pow(cluster.radius, 2) - Math.pow(abscissa - centralCluster.center.x, 2);
-      // Assicurati che squaredDistance non sia negativo (gestisce errori di precisione)
+      // Mi assicuro che squaredDistance non sia negativo (gestisce errori di precisione)
       if (squaredDistance < 0) {
-        squaredDistance = 0; // Imposta a 0 se è leggermente negativo
+        squaredDistance = 0; // Imposto a 0 se è leggermente negativo
       }
       let ordinate = Math.sqrt(squaredDistance);
 
@@ -336,8 +336,8 @@ function generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, compari
       return { abscissa, ordinate };
     }
     else {
-      // Esce dal canvas, cerco posizione che abbia ordinate verticali all'interno del canvas
-      const centerDY = Math.random(1) * frameHeight;
+      // Esce dal canvas, cerco posizione che abbia ordinate tra minY e maxY
+      const centerDY = Math.random() * (maxY - minY) + minY;
 
       // Calcola la distanza orizzontale dall'asse X per rispettare il raggio totale
       let calcVar = Math.pow(totalRadius, 2) - Math.pow(centerDY - centralCluster.center.y, 2);
