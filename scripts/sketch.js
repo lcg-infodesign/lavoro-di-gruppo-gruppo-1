@@ -49,6 +49,7 @@ let agents = [];
 
 function preload() {
   data = loadTable('assets/dataset/uscite.csv', 'ssv', 'header');
+
 }
 
 function setup() {
@@ -329,18 +330,15 @@ function clusterDistance(a, b) {
 }
 
 function draw() {
-  background(0);
+  background(backgroundColor);
 
   if (isComparison) {
     drawComparisonView();
   } else {
     drawMainView();
   }
-
-  let currentColor = rgbaToHex(canvas.get(mouseX, mouseY));
-  if(currentColor != "#000000") {
-    showHover(currentColor);
-  }
+  
+  showHover();
 }
 
 /**
@@ -465,25 +463,33 @@ function rgbaToHex(rgba) {
 
 /**
  * Funzione per far comparire il rettangolo dell'hover sulle categorie
- * @param {string} hexColor Colore della categoria
  */
-function showHover(hexColor) {
-  let indexHovered = categoriesColors.indexOf(hexColor);
-  let category = categories[indexHovered];
+function showHover() {
+  let mouseCoordinates = createVector(mouseX, mouseY);
 
-  if(category == undefined) {
-    return;
+  // Trovo il cerchio in cui si trova il mouse
+  let selectedCluster = null;
+  for(let i = 0; i < clusters.length; i++) {
+    let cluster = clusters[i];
+    if(dist(mouseCoordinates.x, mouseCoordinates.y, cluster.center.x, cluster.center.y) < cluster.radius) {
+      selectedCluster = cluster;
+      break;
+    }
   }
-  // Calcolo la lunghezza del rettangolo
-  let textLength = textWidth(category);
 
-  push();
-  fill(backgroundColor);
-  stroke("white");
-  rect(mouseX + 5, mouseY - 55, textLength+20, 50);
-  noStroke();
-  fill("white");
-  text(category, mouseX + 15, mouseY - 30);
-  pop();
+  // Se il mouse è sopra un cerchio
+  if(selectedCluster != null) {
+    let category = categories[clusters.indexOf(selectedCluster)];
+    let textLength = textWidth(category);
+    
+    push();
+    fill(255, 255, 255, 25);
+    stroke(79, 79, 79);
+    rect(mouseX + 5, mouseY - 55, textLength+20, 50, 8);
+    noStroke();
+    fill("white");
+    text(category, mouseX + 15, mouseY - 30);
+    pop();
+  }
 }
 

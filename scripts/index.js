@@ -131,3 +131,59 @@ function pToggleComparisonButton(e) {
 function pComparisonClicked(e) {
     selectedComparison = e.target.value;
 }
+
+const elements = document.querySelectorAll(".animated");
+
+window.addEventListener("scroll", () => {
+    elements.forEach((el) => {
+        const position = el.getBoundingClientRect().top;
+        if (position < window.innerHeight) {
+            el.classList.add("show");
+        } else {
+            el.classList.remove("show");
+        }
+    });
+});
+
+const elements1 = document.querySelectorAll(".animated2");
+
+window.addEventListener("scroll", () => {
+    elements1.forEach((el) => {
+        const position = el.getBoundingClientRect().top;
+        if (position < window.innerHeight) {
+            el.classList.add("show");
+        } else {
+            el.classList.remove("show");
+        }
+    });
+});
+
+
+const elements2 = document.querySelectorAll(".animated3");
+
+window.addEventListener("scroll", () => {
+    elements2.forEach((el) => {
+        const position = el.getBoundingClientRect().top;
+        if (position < window.innerHeight) {
+            el.classList.add("show");
+        } else {
+            el.classList.remove("show");
+        }
+    });
+});
+
+
+const elements3 = document.querySelectorAll(".animated4");
+
+window.addEventListener("scroll", () => {
+    elements3.forEach((el) => {
+        const position = el.getBoundingClientRect().top;
+        if (position < window.innerHeight) {
+            el.classList.add("show");
+        } else {
+            el.classList.remove("show");
+        }
+    });
+});
+
+
