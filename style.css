@@ -23,12 +23,14 @@ body {
   justify-content: space-between;
   font-family: "semplicitapro", sans-serif;
 }
+
 #intro-left {
   width: 35%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
 #intro-left p {
   font-size: 16px;
   margin: 0;
@@ -49,7 +51,6 @@ body {
   font-size: 1.5rem;
   margin: 0;
 }
-
 
 #intro-right {
   width: 65%;
@@ -466,15 +467,17 @@ flex-direction: column;
 #cerchio1{
   position:absolute;
   top: 55vh;
-  left:10vw;
+  left:11vw;
   border-radius: 50%;
   background-color: #dff304;
   width: 12vw;
   height: 12vw;
   z-index: -1000;
   animation: animation 4s infinite;
-  animation: float 3s ease-in-out infinite;
-  
+  animation: float 3s ease-in-out infinite, animate 7s;
+  animation-delay: 1.2s;
+  opacity: 0;
+  animation-fill-mode: forwards;
 }
 
 #cerchio2{
@@ -487,8 +490,10 @@ flex-direction: column;
   height: 18vw;
   z-index: -1000;
   animation: animation 5s infinite;
-  animation: float 4s ease-in-out infinite;
-  
+  animation: float 4s ease-in-out infinite, animate 7s;
+  animation-delay: 1.5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
 }
 
 #cerchio3{
@@ -501,7 +506,10 @@ flex-direction: column;
   height: 8vw;
   z-index: -1000;
   animation: animation 3s infinite;
-  animation: float 5s ease-in-out infinite;
+  animation: float 5s ease-in-out infinite, animate 7s;
+  animation-delay: 0.5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
 
 }
 
@@ -515,8 +523,10 @@ flex-direction: column;
   width: 4vw;
   height: 4vw;
   z-index: -1000;
-  animation: animation 3s infinite;
-  animation: float 5s ease-in-out infinite;
+  animation: animation 3s infinite, float 5s ease-in-out infinite;
+  animation-delay: 1.2s;
+  opacity: 0;
+  animation-fill-mode: forwards;
 
 }
 
@@ -531,8 +541,8 @@ flex-direction: column;
   height: 13vw;
   z-index: -1000;
   animation: animation 3s infinite;
-  animation: float 4s ease-in-out infinite;
-
+  animation: float 6s ease-in-out infinite;
+ 
 }
 
 
@@ -546,8 +556,9 @@ flex-direction: column;
   height: 10vw;
   z-index: -1000;
   animation: animation 3s infinite;
-  animation: float 3s ease-in-out infinite;
-
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 1.2s;
+  animation-fill-mode: forwards;
 }
 
 #cerchio7{
@@ -561,6 +572,8 @@ flex-direction: column;
   z-index: -1000;
   animation: animation 3s infinite;
   animation: float 6s ease-in-out infinite;
+  animation-fill-mode: forwards;
+
 
 }
 
@@ -659,10 +672,7 @@ flex-direction: column;
 
 @keyframes animation{
   0%{
-    opacity: 1;
-  }
-  50%{
-    opacity: 0.5;
+    opacity:0;
   }
   100%{
     opacity:1;

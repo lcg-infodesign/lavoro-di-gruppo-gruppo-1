@@ -485,9 +485,10 @@ function showHover() {
     push();
     fill(255, 255, 255, 25);
     stroke(79, 79, 79);
-    rect(mouseX + 5, mouseY - 55, textLength+20, 50, 8);
+    rect(mouseX + 5, mouseY - 55, textLength, 50, 8);
     noStroke();
     fill("white");
+    textSize(20);
     text(category, mouseX + 15, mouseY - 30);
     pop();
   }
