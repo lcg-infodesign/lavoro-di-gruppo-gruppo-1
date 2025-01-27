@@ -60,6 +60,7 @@ body {
   margin: 0;
 }
 
+
 #intro-right {
   width: 65%;
   display: flex;
@@ -81,7 +82,6 @@ body {
   position: relative;
   top: -100px;
 }
-
 #topballs{
   position: relative;
   width: 202px;
@@ -92,6 +92,7 @@ body {
   right: 10%;
   width: 110px;
   top: 74%;
+  rotate: 90deg;
 
 }
 #rightballs{
@@ -101,16 +102,20 @@ body {
   width: 30px;
 }
 
+
 a {
   color: #B8E558;
   text-decoration: underline;
 }
+
 a:hover{
   color: #b8e558d3;
 }
+
 a:visited {
   color: #b8e558d3;
 }
+
 
 #logo-polimi {
   width: 150px;
@@ -129,6 +134,7 @@ a:visited {
   justify-content: left;
   align-items: center;
 }
+
 
 #mtoggle {
   display: flex;
@@ -164,6 +170,7 @@ a:visited {
   height: calc(100% - 10px);
 }
 
+
 .demo-circle {
   width: 16px;
   display: inline-block;
@@ -176,6 +183,7 @@ a:visited {
   font-size: 16px;
   line-height: 16px;
 }
+
 
 #heading {
   color: white;
@@ -300,14 +308,27 @@ a:visited {
   border-radius: 10px;
   background-color: #807d83;
 }
-#regions-list::-webkit-scrollbar-thumb:hover {
+ #regions-list::-webkit-scrollbar-thumb:hover {
   background-color: white;
   transition: 0.2s;
   cursor: pointer;
 }
+
 #region-list:hover{
  scrollbar-color: white #807d83;
  }
+
+.single-region{
+  font-family: 'forma-djr-text', sans-serif;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 13px;
+  cursor: pointer;
+  color: rgb(255, 255, 255); 
+}
+.single-region:hover{
+  background-color: rgba(0, 0, 0, 0.362);
+}
 
 #comparison-button {
   width: 33px;
@@ -339,6 +360,7 @@ a:visited {
 }
 
 #box-2 {
+  display: none;
   width: 175px;
   height: 39px;
   padding: 5px;
@@ -346,23 +368,26 @@ a:visited {
   border-radius: 15px;
   overflow: hidden;
   position: relative;
+  background-color: transparent; 
   display: flex;
   flex-direction: column;
   justify-content: end;
   transition: all 0.5s;
+  transition: all 0.7s;
 }
- 
+
 #box-2:hover {
   height: 200px;
+  transition: 0.5s;
   margin-top: -161px;
   background-color: rgba(61, 61, 61, 0.851);
 }
-
 
 #heading h1 {
   font-family: 'Ortica';
   font-size: 2rem;
 }
+
 
 .description {
   font-size: 1em;
@@ -375,19 +400,16 @@ a:visited {
   align-items: center;
   gap: 5px;
 }
-
 .description .circle {
   width: 10px;
   height: 10px;
   background: white;
   border-radius: 50%;
 }
-
 .description .equals {
   font-size: 1em;
   font-weight: bold;
 }
-
 #fixed-toggle{
   position: fixed;
   bottom: 5%;
@@ -408,3 +430,19 @@ a:visited {
   position: relative;
   left: -23.6px;
 }
+
+#vetro1{
+  width: 50%;
+  height: 50%;
+  margin-left: 25%;
+  margin-top: 25%;
+  padding: 30px;
+  margin: auto;
+  /* Rectangle 25 */
+background: linear-gradient(170.5deg, rgba(255, 255, 255, 0.1) 16.96%, rgba(255, 255, 255, 0.02) 87.84%);
+backdrop-filter: blur(40px);
+/* Note: backdrop-filter has minimal browser support */
+border-radius: 20px;
+font-family: "semplicitapro", sans-serif;
+}
+

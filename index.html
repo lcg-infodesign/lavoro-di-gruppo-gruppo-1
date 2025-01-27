@@ -10,8 +10,8 @@
     <meta property="og:url" content=""> <!--inserire link sito--> 
     <meta property="og:type" content="website">
     <meta property="og:locale" content="it_IT">
-
-    <title>Geografia delle risorse</title>
+ 
+    <title>La geografia delle risorse</title>
 
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" href="https://use.typekit.net/sad4kpn.css">
@@ -24,7 +24,7 @@
   </head>
 
   <body>
-    <div id="intro">
+    <!--<div id="intro">
       <div id="intro-left">
         <img src="assets/images/Gif_spazivuoti_bottomright_verde.gif" alt="Balls" id="topballs">
 
@@ -69,16 +69,67 @@
           Prof. Mauri, Prof. Conficconi</br>
           Bano, Chinni, Ribeiro Lages, Magalhães, Menoni, Piganzoli, Segato
           </div>
+        -->
 
-          
+        <img src="assets/images/polimi_white.svg" alt="Logo Politecnico di Milano" id="logo-polimi">
+        <div id="colophon1">A.A. 2024/25 - Design della Comunicazione</br>
+          Laboratorio di Computer Grafica per l'Information Design</br></div>
+        <div id="colophon2">Prof. Mauri, Prof. Conficconi</br>
+          Bano, Chinni, Ribeiro Lages, Magalhães, Menoni, Piganzoli, Segato</div>
+
+        <div id="homepage">
+          <div id="vetro1">
+            <h1 id="titolo">LA GEOGRAFIA<BR>DELLE RISORSE</h1>           
+            <p class="testobasso">Questo progetto offre una rappresentazione chiara e interattiva della distribuzione della spesa pubblica in Italia, basata sui dati ufficiali del Ministero dell’Economia pubblicati sulla piattaforma 
+              <a id="link" href="https://www.agenziacoesione.gov.it/sistema-conti-pubblici-territoriali/" target="_blank">CPT - Conti Pubblici Territoriali</a>.<br>
+              Il dataset comprende le spese regionali suddivise per categorie, distinte per colore, consentendo un'analisi dettagliata e trasparente. 
+              L'interfaccia intuitiva permette di esplorare i dati regione per regione, trasformando informazioni complesse in un design immediato e accessibile.
+                  </div>
+          <div id="cerchio1"></div>
+          <div id="cerchio2"></div>
+          <div id="cerchio3"></div>
 
 
-          
+        <!--Il dataset comprende le spese regionali suddivise per categorie, distinte per colore, consentendo un'analisi dettagliata e trasparente. 
+              L'interfaccia intuitiva permette di esplorare i dati regione per regione, trasformando informazioni complesse in un design immediato e accessibile.</p>
+      -->
 
 
-         
+
 
         </div>
+          <div id="simbolotoggle">
+          <div id="cerchioa"></div>
+          <div id="cerchiob"></div>
+          <div id="cerchioc"></div>
+          <div id="cerchiod"></div>
+          <div id="cerchioe"></div>
+          <div id="cerchiof"></div>
+          <div id="cerchiog"></div>
+          <div id="cerchioh"></div>
+          <div id="cerchioi"></div>
+          <div id="cerchiol"></div>
+          <div id="cerchiom"></div>
+          <div id="cerchion"></div>
+          <div id="cerchioo"></div>
+        </div>
+        <div id="vetro2">Un semplice bottone permette di alternare tra visualizzazioni in valori assoluti e percentuali, fornendo una doppia prospettiva sulla gestione delle risorse.
+        
+        </div>
+
+        <div id="vetro3">
+          <div id="mtoggle">
+            <div id="mtoggle-left" class="mtoggle-section m-selected" onclick="tToggleView(0)">
+              <p>€</p>
+            </div>
+            <div id="mtoggle-right" class="mtoggle-section" onclick="tToggleView(1)">
+              <p>%</p>
+            </div>
+          </div><p>Ogni cerchio rappresenta una spesa di 100 milioni di Euro</p>
+        </div>
+          <div class="legenda-inline">
+            <div class="demo-circle" style="background-color: transparent;"></div>
+            
       </div>
     </div>
     <div id="sketch-parent">
@@ -103,7 +154,6 @@
         <div class="toggle-switch" id="toggle-switch"></div>
     </div>
 
-        
     </div>
     <script src="scripts/index.js"></script>
     <script src="scripts/cluster.js"></script>
