@@ -13,7 +13,7 @@
  */
 function pDrawLabels() {
     let pRegionsList = document.getElementById('regions-list');
-    let pComparisonDropdown = document.getElementById('box-2');
+    let pComparisonDropdown = document.getElementById('regions-list-2');
 
     for (let i = 0; i < regions.length; i++) {
         // First dropdown buttons
@@ -26,7 +26,7 @@ function pDrawLabels() {
 
         // Comparison dropdown buttons
         let comparisonButton = document.createElement('button');
-        comparisonButton.className = 'region-label';
+        comparisonButton.className = 'comparison-label';
         comparisonButton.value = regions[i];
         comparisonButton.innerHTML = regions[i];
         comparisonButton.onclick = pComparisonClicked;
@@ -42,22 +42,11 @@ function pDrawLabels() {
  * Funzione che viene chiamata quando un label di regione viene cliccato
  * @param {MouseEvent} e Evento del click
  */
-function pRegionClicked(e) {
-    // Ottengo il option selezionato
-    selectedRegion = e.target.value;
-    // Scrivo il nome della regione selezionata nel button
-    let pSelection = document.getElementById("bottom-selected-region");
-    pSelection.value = selectedRegion;
-    pSelection.innerHTML = selectedRegion;
-}
-
 function pFindRegionIndex(regionName) {
     return regions.indexOf(regionName);
 }
 
-
-//PARTE INSERITA DA SIMO DA UNIRE ALLA FUNZIONE PRIMA//
- function pRegionClicked(e) {
+function pRegionClicked(e) {
     // Ottieni l'elemento della regione cliccata
     const clickedRegion = e.target;
 
@@ -77,8 +66,25 @@ function pFindRegionIndex(regionName) {
     pSelection.innerHTML = selectedRegion;
 }
 
+function pComparisonClicked(e) {
+    // Ottieni l'elemento della regione cliccata
+    const clickedRegion = e.target;
 
+    // Rimuovi la classe 'selected' da tutte le altre regioni
+    const allRegionLabels = document.querySelectorAll('.comparison-label');
+    allRegionLabels.forEach(region => {
+        region.classList.remove('selected'); // Rimuove la classe 'selected' (simulando "hover off")
+    });
 
+    // Aggiungi la classe 'selected' all'elemento cliccato (simulando "hover on")
+    clickedRegion.classList.add('selected');
+
+    // Ottieni e aggiorna il nome della regione selezionata nel button
+    selectedRegion = clickedRegion.value;
+    let pSelection = document.getElementById("comparison-dropdown");
+    pSelection.value = selectedRegion;
+    pSelection.innerHTML = selectedRegion;
+}
 
 
 
@@ -87,43 +93,36 @@ function pFindRegionIndex(regionName) {
  * @param {Event} e Evento del click
  */
 function pToggleComparisonButton(e) {
+    console.log("Toggle comparison button");
     let pComparisonDropdown = document.getElementById('box-2');
     let button = e.target.closest('#comparison-button'); // Ensure we get the button element
     
-    if(pComparisonDropdown.style.display == 'block') {
+    if(pComparisonDropdown.style.display == 'flex') {
         // Nascondo il dropdown
         pComparisonDropdown.style.display = 'none';
         // Ruoto il pulsante di apertura del dropdown di 45 gradi
         button.classList.remove('rotated');
-        // Abilito la selezione di Tutte le regioni
-        document.getElementById('regions-dropdown').childNodes[0].disabled = false;
         // Modifico la visualizzazione
         isComparison = false;
     }
     else {
         // Mostro il dropdown
-        pComparisonDropdown.style.display = 'block';
+        pComparisonDropdown.style.display = 'flex';
         // Ruoto il pulsante di apertura del dropdown di 45 gradi
         button.classList.add('rotated');
         // Cambio la selezione del dropdown di sinistra se è tutte le regioni
         if(selectedRegion == "Tutte le regioni") {
-            document.getElementById('regions-dropdown').selectedIndex = 3;
+            document.getElementById('bottom-selected-region').innerHTML = "Lombardia";
+            document.getElementsByClassName('region-label')[0].classList.remove('selected');
+            document.getElementsByClassName('region-label')[pFindRegionIndex('Lombardia')].classList.add('selected');
             selectedRegion = "Lombardia";
         }
         // Disabilito la selezione di Tutte le regioni
-        document.getElementById('regions-dropdown').childNodes[0].disabled = true;
+        // TODO: Implementare questa condizione
         // Modifico la visualizzazione
         isComparison = true;
     }
     tToggleVisibility();
-}
-
-/**
- * Funzione per gestire il cambio della selezione della regione di confronto
- * @param {*} e 
- */
-function pComparisonClicked(e) {
-    selectedComparison = e.target.value;
 }
 
 const elements = document.querySelectorAll(".animated");
