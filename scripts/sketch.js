@@ -45,7 +45,15 @@ let categoriesColors = ["#F87A01", "#C2858C", "#016647", "#FF467B", "#0001B1", "
  * CLUSTERS
  */
 let clusters = [];
+let leftComparisonClusters = [];
+let rightComparisonClusters = [];
+
+/**
+ * AGENTS
+ */
 let agents = [];
+let leftComparisonAgents = [];
+let rightComparisonAgents = [];
 
 function preload() {
   data = loadTable('assets/dataset/uscite.csv', 'ssv', 'header');
@@ -147,16 +155,21 @@ function setup() {
       boundaryStiffness: 0.5
     }
     clusters.push(cluster);
+    leftComparisonClusters.push(structuredClone(cluster));
+    rightComparisonClusters.push(structuredClone(cluster));
   }
 
   // Ordino i cluster in base al numero di agenti in ordine decrescente
   clusters.sort((a, b) => b.agentCount - a.agentCount);
+  leftComparisonClusters.sort((a, b) => b.agentCount - a.agentCount);
+  rightComparisonClusters.sort((a, b) => b.agentCount - a.agentCount);
   
   // Salvo le coordinate del cluster precedente a quello calcolato
   let centralCluster = clusters[0];
 
   for(let i = 0; i < clusters.length; i++) {
     let cluster = clusters[i];
+
     // Ridimensiono raggio cluster in base a numero agenti
     let agentsArea = cluster.agentCount * (4 * agentRadius * agentRadius) * 1.1;
     let newRadius = sqrt(agentsArea / PI);
@@ -290,33 +303,6 @@ function generateRandomCoordinatesOnOuterCircle(centralCluster, cluster) {
 
     return { abscissa: centerDX, ordinate: centerDY };
   }
-
-  
-
-  // Controllo che l'ascissa sommando il raggio non esca dal canvas
-  /*if(leftAbscissaRange < 0) {
-    leftAbscissaRange = center.x + radius;
-  }
-  if(rightAbscissaRange > frameWidth) {
-    rightAbscissaRange = center.x - radius;
-  }
-
-  // Trovo una ascissa casuale all'interno del range
-  let abscissa = random(leftAbscissaRange, rightAbscissaRange);
-  // Calcolo l'ordinata in base all'ascissa
-  let ordinate = sqrt(pow(radius, 2) - pow(abscissa - center.x, 2));
-
-  // Calcolo il quadrante in cui si trova il punto
-  if(random() < 0.5) {
-    ordinate = center.y + ordinate;
-  }
-  else {
-    ordinate = center.y - ordinate;
-  }
-  
-  // Controllo che l'ordinata generata 
-
-  return { abscissa, ordinate };*/
 }
 
 /**
@@ -345,46 +331,138 @@ function draw() {
  * Funzione per disegnare la visualizzazione di confronto
  */
 function drawComparisonView() {
-  let area = windowWidth * 0.40 * (windowHeight - 230);
-  let circleArea = area / ((totalExpenses / 100000000) * 1.8);
-  let radius = Math.sqrt(circleArea / Math.PI);
-  let positionX = radius;
-  let positionY = radius;
+  /** Visualizzazione di sinistra */
+  
 
-  for(let i = 0; i < expensesPerCategory.length; i++) {
-    for(let j = 0; j < expensesPerCategory[i]; j+= 100000000) {
-      if(selectedRegion == "Tutte le regioni") {
-        fill(categoriesColors[i]);
-      }
-      else {
-        if(j < regionDataLastYear[regions.indexOf(selectedRegion) - 1].data[i].amount) {
-          fill(categoriesColors[i]);
-          circle(positionX, positionY, radius * 2);
-          positionX += radius * 2;
-          if(positionX > windowWidth * 0.40) {
-            positionX = radius;
-            positionY += radius * 2;
+  // Disegno i cluster
+  for(let i = 0; i < leftComparisonClusters.length; i++) {
+    let cluster = leftComparisonClusters[i];
+
+    // Disegno il cluster
+    ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
+    noFill();
+  }
+
+  /** Visualizzazione di destra */
+  rightComparisonClusters.forEach(cluster => {
+    fill("green");
+    ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
+    noFill();
+  });
+  
+}
+
+/**
+ * Funzione per calcolare i cluster di sinistra nella visualizzazione di confronto
+ */
+function calculateLeftComparisonClusters() {
+  let minLeft = 0;
+  let maxRight = frameWidth / 2;
+
+  for(let i = 0; i < leftComparisonClusters.length; i++) {
+    let cluster = leftComparisonClusters[i];
+    // Calcolo il numero di agenti al suo interno per la regione selezionata
+    let regionIndex = regions.indexOf(selectedRegion) - 1;
+    let agentSum = 0;
+    // Calcolo gli agenti della categoria i per la regione selezionata
+    if(regionIndex >= 0) {
+      agentSum = floor(regionDataLastYear[regionIndex].data[i].amount / 100000000);
+    }
+    else {
+      agentSum = 0;
+    }
+    cluster.agentCount = agentSum;
+
+    // Ridimensiono raggio cluster in base a numero agenti
+    let agentsArea = cluster.agentCount * (4 * agentRadius * agentRadius) * 1.1;
+    let newRadius = sqrt(agentsArea / PI);
+    cluster.radius = newRadius;
+  }
+
+  // Riordino i cluster in base al numero di agenti
+  leftComparisonClusters.sort((a, b) => b.agentCount - a.agentCount);
+
+  // Cambio le coordinate di ogni cluster per rimanere a sinistra e non sovrapporsi
+  for(let i = 0; i < leftComparisonClusters.length; i++) {
+    let cluster = leftComparisonClusters[i];
+    if(i == 0) {
+      cluster.center.x = frameWidth / 4;
+      cluster.center.y = frameHeight / 2;
+    }
+    else {
+      // Genero nuove coordinate vicine al cluster centrale
+      let generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster);
+
+      // Imposto il centro del cluster
+      cluster.center.x = generatedCoordinates.abscissa;
+      cluster.center.y = generatedCoordinates.ordinate;
+
+      // Controllo che il cluster non si sovrapponga a cluster esistenti
+      for(let attempts = 0; attempts < 1000; attempts++) {
+        let overlaps = clusters.some(c => 
+          c != cluster && clusterDistance(c.center, cluster.center) < (c.radius + cluster.radius + 5)
+        );
+        if (overlaps) {
+          // Creo un nuovo centro che non esca dal canvas
+          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster);
+          cluster.center.x = generatedCoordinates.abscissa;
+          cluster.center.y = generatedCoordinates.ordinate;
+        }
+        else {
+          break;
+        }
+
+        if(attempts == 999) {
+          // Seleziono randomicamente un altro cluster come cluster centrale
+          let randomVar = floor(random(1, i));
+          centralCluster = clusters[randomVar];
+          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster);
+
+          // Imposto il centro del cluster
+          cluster.center.x = generatedCoordinates.abscissa;
+          cluster.center.y = generatedCoordinates.ordinate;
+
+          // Controllo che il cluster non si sovrapponga a cluster esistenti
+          for(let subAttempts = 0; subAttempts < 100; subAttempts++) {
+            let overlaps = clusters.some(c => 
+              c != cluster && clusterDistance(c.center, cluster.center) < (c.radius + cluster.radius + 5)
+            );
+            if (overlaps && subAttempts < 99) {
+              // Creo un nuovo centro che non esca dal canvas
+              generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster);
+              cluster.center.x = generatedCoordinates.abscissa;
+              cluster.center.y = generatedCoordinates.ordinate;
+            }
+            else if(overlaps && subAttempts == 99) {
+              cluster.center.x = -200;
+              cluster.center.y = -200;
+              centralCluster = clusters[0];
+              break;
+            }
+            else {
+              centralCluster = clusters[0];
+              break;
+            }
           }
         }
       }
     }
   }
+}
 
-  positionX = radius + windowWidth * 0.50;
-  positionY = radius;
+/**
+ * Funzione per calcolare i cluster di destra nella visualizzazione di confronto
+ */
+function calculateRightComparisonClusters() {
+  // Cambio la posizione dei cluster per rimanere nella parte destra del canvas
+  let minLeft = frameWidth / 2;
+  let maxRight = frameWidth;
 
-  for(let i = 0; i < expensesPerCategory.length; i++) {
-    for(let j = 0; j < expensesPerCategory[i]; j+= 100000000) {
-      if(j < regionDataLastYear[regions.indexOf(selectedComparison) - 1].data[i].amount) {
-        fill(categoriesColors[i]);
-        circle(positionX, positionY, radius * 2);
-        positionX += radius * 2;
-        if(positionX > windowWidth * 0.9) {
-          positionX = radius + windowWidth * 0.50;
-          positionY += radius * 2;
-        }
-      }
-    }
+  // Adatto la posizione dei cluster di sinistra
+  for(let i = 0; i < rightComparisonClusters.length; i++) {
+    let cluster = rightComparisonClusters[i];
+    let newCenter = { x: random(minLeft, maxRight), y: random(0, frameHeight) };
+    cluster.center = newCenter;
   }
 }
 
@@ -394,7 +472,6 @@ function drawComparisonView() {
 function drawMainView() {
   // Disegno i cluster
   clusters.forEach(cluster => {
-    //fill("grey");
     noFill();
     ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
     noFill();
@@ -486,4 +563,3 @@ function showHover() {
     pop();
   }
 }
-
