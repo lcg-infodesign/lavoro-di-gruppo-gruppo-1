@@ -3,7 +3,7 @@
 <img src="https://www.polimi.it/_assets/4b51f00386267395f41e0940abbcd656/Images/logo.svg" width="200"/>
 
 # Descrizione del Progetto
-Questo progetto rappresenta in modo chiar e interattivo la distribuzione della spesa pubblica nelle reginioni italiane, con dati ufficiali orniti dal Ministero dell’Economia tramite la piattaforma CPT - Conti Pubblici Territoriali. L'obiettivo è rendere accessibili e comprensibili informazioni complesse attraverso una visualizzazione intuitiva.
+Questo progetto rappresenta in modo chiaro e interattivo la distribuzione della spesa pubblica nelle reginioni italiane, con dati ufficiali orniti dal Ministero dell’Economia tramite la piattaforma CPT - Conti Pubblici Territoriali. L'obiettivo è rendere accessibili e comprensibili informazioni complesse attraverso una visualizzazione intuitiva.
 Ogni puntino nella rappresentazione grafica corrisponde a 100 milioni di Euro, e i colori identificano i principali settori di spesa. Gli utenti possono esplorare i dati a livello regionale e alternare tra visualizzazioni in valori assoluti e percentuali, offrendo prospettive diverse sulla gestione delle risorse pubbliche.
 
 ## Fonti dei Dati
