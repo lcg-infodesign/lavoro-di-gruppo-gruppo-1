@@ -50,7 +50,12 @@ function tToggleView(selected) {
         //document.getElementById("euro").src="assets/images/%.png"
         //document.getElementById("demo-value").textContent="100.000.000€"
         document.getElementById("testobasso").innerHTML="Ogni cerchio rappresenta una spesa di 100 milioni di Euro"
-        document.getElementById("cerchio4").innerHTML="€"
+        document.getElementById("prova").innerHTML="€"
+        document.getElementById("prova1").innerHTML="€"
+        document.getElementById("prova2").innerHTML="€"
+        document.getElementById("prova3").innerHTML="€"
+        document.getElementById("prova4").innerHTML="€"
+
         
 
 
@@ -60,7 +65,11 @@ function tToggleView(selected) {
         //document.getElementById("euro").src="assets/images/euro.png"
         //document.getElementById("demo-value").textContent="%"
         document.getElementById("testobasso").innerHTML="Ogni cerchio rappresenta un valore percentuale"
-        document.getElementById("cerchio4").innerHTML="%"
+        document.getElementById("prova").innerHTML="%"
+        document.getElementById("prova1").innerHTML="%"
+        document.getElementById("prova2").innerHTML="%"
+        document.getElementById("prova3").innerHTML="%"
+        document.getElementById("prova4").innerHTML="%"
 
     }
 }

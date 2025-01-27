@@ -141,7 +141,7 @@ class ParticleClass {
             fill(this.parent.color);
         } else {
             // Creo un colore opaco
-            fill(String(this.parent.color) + "20");
+            fill(255, 255, 255, 10);
         }
         noStroke();
         ellipse(this.position.x, this.position.y, this.radius * 2);

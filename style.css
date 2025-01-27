@@ -706,7 +706,7 @@ flex-direction: column;
     color:#252129;
 }
 
-.animated1 p{
+#prova1{
   font-size: 7vw;
   rotate: -15deg;
   font-weight: 600;
@@ -732,28 +732,28 @@ flex-direction: column;
     color:#252129;
 }
 
-.animated p{
+#prova{
   font-size: 2vw;
   rotate: deg;
   font-weight: 600;
   font-family: "semplicitapro", sans-serif;
 }
 
-.animated2 p{
+#prova2{
   font-size: 5vw;
   rotate: 20deg;
   font-weight: 600;
   font-family: "semplicitapro", sans-serif;
 }
 
-.animated3 p{
+#prova3{
   font-size: 3.2vw;
   rotate: 30deg;
   font-weight: 600;
   font-family: "semplicitapro", sans-serif;
 }
 
-.animated4 p{
+#prova4{
   font-size: 1.5vw;
   rotate: -30deg;
   font-weight: 600;
@@ -816,3 +816,18 @@ flex-direction: column;
   }
 
 
+.testocambiato{
+  opacity: 0;
+  transform: scale(0);
+  transition: all 7s ease;
+  transition-delay: 0s;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  color:#252129;
+  font-size: 2vw;
+  rotate: deg;
+  font-weight: 600;
+  font-family: "semplicitapro", sans-serif;
+}
