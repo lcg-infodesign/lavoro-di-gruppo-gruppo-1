@@ -178,6 +178,11 @@ function setup() {
     if(i == 0) {
       cluster.center.x = frameWidth / 2;
       cluster.center.y = frameHeight / 2;
+
+      // Aggiungo i pallini dei cluster
+      for(let k = 0; k < cluster.agentCount; k++) {
+        agents.push(new ParticleClass(cluster));
+      }
     }
     else {
       // Genero nuove coordinate vicine al cluster centrale
@@ -349,8 +354,7 @@ function generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, compari
       // Decidi casualmente se andare a sinistra o a destra del centro del cluster centrale
       const direction = Math.random() < 0.5 ? -1 : 1;
       const centerDX = centralCluster.center.x + direction * deltaX;
-
-      console.log("centerDX: " + centerDX + " centerDY: " + centerDY);
+      
       return { abscissa: centerDX, ordinate: centerDY };
     }
   }
@@ -386,13 +390,12 @@ function drawComparisonView() {
   for(let i = 0; i < leftComparisonClusters.length; i++) {
     let cluster = leftComparisonClusters[i];
     // Disegno il cluster
-    fill("red");
     ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
     noFill();
   }
   for(let i = 0; i < leftComparisonAgents.length; i++) {
-    let agent = agents[i];
-    agent.applyBehaviors(agents);
+    let agent = leftComparisonAgents[i];
+    agent.applyBehaviors(leftComparisonAgents);
     agent.update();
     agent.setColored(true);
     agent.display();
@@ -447,11 +450,16 @@ function calculateLeftComparisonClusters() {
   centralCluster.center.y = frameHeight / 2;
 
   // Cambio le coordinate di ogni cluster per rimanere a sinistra e non sovrapporsi
-  for(let i = 1; i < leftComparisonClusters.length; i++) {
+  for(let i = 0; i < leftComparisonClusters.length; i++) {
     let cluster = leftComparisonClusters[i];
     if(i == 0) {
       cluster.center.x = frameWidth / 4;
       cluster.center.y = frameHeight / 2;
+
+      // Aggiungo i pallini dei cluster
+      for(let k = 0; k < cluster.agentCount; k++) {
+        leftComparisonAgents.push(new ParticleClass(cluster));
+      }
     }
     else {
       // Genero nuove coordinate vicine al cluster centrale
@@ -570,8 +578,10 @@ function drawMainView() {
         amountSum += 100000000;
         if(amountSum >= expensesPerCategory[currentCategory]) {
           currentCategory++;
-          currentCategoryAmount = regionDataLastYear[selectedRegionIndex - 1].data[currentCategory].amount;
-          amountSum = 0;
+          if(currentCategory < expensesPerCategory.length) {
+            currentCategoryAmount = regionDataLastYear[selectedRegionIndex - 1].data[currentCategory].amount;
+            amountSum = 0;
+          } 
         }
       }
       previousColor = agent.parent.color;
