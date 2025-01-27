@@ -307,9 +307,60 @@ function generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, compari
       return { abscissa: centerDX, ordinate: centerDY };
     }
   }
-  else {
+  else if(comparisonMode == 1) {
     // Controllo che il total radius a partire dal centro non esca dalla metà sinistra del canvas
     if(centralCluster.center.x - totalRadius < 0 || centralCluster.center.x + totalRadius > frameWidth / 2) {
+      // Non esce dal canvas, cerco posizione randomica calcolando l'ascissa massima e minima
+      let leftAbscissaRange = centralCluster.center.x - totalRadius;
+      let rightAbscissaRange = centralCluster.center.x + totalRadius;
+
+      // Controllo che l'ascissa sommando il raggio non esca dal canvas
+      if(leftAbscissaRange <= 0) {
+        leftAbscissaRange = centralCluster.center.x + centralCluster.radius;
+      }
+      if(rightAbscissaRange > frameWidth / 2) {
+        rightAbscissaRange = centralCluster.center.x - centralCluster.radius;
+      }
+
+      // Trovo una ascissa casuale all'interno del range
+      let abscissa = random(leftAbscissaRange, rightAbscissaRange);
+      let squaredDistance = Math.pow(cluster.radius, 2) - Math.pow(abscissa - centralCluster.center.x, 2);
+      // Mi assicuro che squaredDistance non sia negativo (gestisce errori di precisione)
+      if (squaredDistance < 0) {
+        squaredDistance = 0; // Imposto a 0 se è leggermente negativo
+      }
+      let ordinate = Math.sqrt(squaredDistance);
+
+      // Calcolo il quadrante in cui si trova il punto
+      if(random() < 0.5) {
+        ordinate = centralCluster.center.y + ordinate;
+      }
+      else {
+        ordinate = centralCluster.center.y - ordinate;
+      }
+      return { abscissa, ordinate };
+    }
+    else {
+      // Esce dal canvas, cerco posizione che abbia ordinate tra minY e maxY
+      const centerDY = Math.random() * (maxY - minY) + minY;
+
+      // Calcola la distanza orizzontale dall'asse X per rispettare il raggio totale
+      let calcVar = Math.pow(totalRadius, 2) - Math.pow(centerDY - centralCluster.center.y, 2);
+      if(calcVar < 0) {
+        calcVar = 0;
+      }
+      const deltaX = Math.sqrt(calcVar);
+
+      // Decidi casualmente se andare a sinistra o a destra del centro del cluster centrale
+      const direction = Math.random() < 0.5 ? -1 : 1;
+      const centerDX = centralCluster.center.x + direction * deltaX;
+
+      return { abscissa: centerDX, ordinate: centerDY };
+    }
+  }
+  else {
+    // Controllo che il total radius a partire dal centro non esca dalla metà sinistra del canvas
+    if(centralCluster.center.x - totalRadius < frameWidth / 2 || centralCluster.center.x + totalRadius > frameWidth) {
       // Non esce dal canvas, cerco posizione randomica calcolando l'ascissa massima e minima
       let leftAbscissaRange = centralCluster.center.x - totalRadius;
       let rightAbscissaRange = centralCluster.center.x + totalRadius;
@@ -424,6 +475,8 @@ function drawComparisonView() {
  * Funzione per calcolare i cluster di sinistra nella visualizzazione di confronto
  */
 function calculateLeftComparisonClusters() {
+  // Svuoto l'array degli agenti di sinistra
+  leftComparisonAgents = [];
   for(let i = 0; i < leftComparisonClusters.length; i++) {
     let cluster = leftComparisonClusters[i];
     // Calcolo il numero di agenti al suo interno per la regione selezionata
@@ -541,6 +594,8 @@ function calculateLeftComparisonClusters() {
  * Funzione per calcolare i cluster di destra nella visualizzazione di confronto
  */
 function calculateRightComparisonClusters() {
+  // Svuoto l'array degli agenti di destra
+  rightComparisonAgents = [];
   for(let i = 0; i < rightComparisonClusters.length; i++) {
     let cluster = rightComparisonClusters[i];
     // Calcolo il numero di agenti al suo interno per la regione selezionata
@@ -573,7 +628,7 @@ function calculateRightComparisonClusters() {
   rightComparisonClusters.sort((a, b) => b.agentCount - a.agentCount);
   let centralCluster = rightComparisonClusters[0];
 
-  centralCluster.center.x = frameWidth / 4;
+  centralCluster.center.x = frameWidth * (3/4);
   centralCluster.center.y = frameHeight / 2;
 
   // Cambio le coordinate di ogni cluster per rimanere a sinistra e non sovrapporsi
@@ -590,7 +645,7 @@ function calculateRightComparisonClusters() {
     }
     else {
       // Genero nuove coordinate vicine al cluster centrale
-      let generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 1);
+      let generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 2);
 
       // Imposto il centro del cluster
       cluster.center.x = generatedCoordinates.abscissa;
@@ -603,7 +658,7 @@ function calculateRightComparisonClusters() {
         );
         if (overlaps) {
           // Creo un nuovo centro che non esca dal canvas
-          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 1);
+          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 2);
           cluster.center.x = generatedCoordinates.abscissa;
           cluster.center.y = generatedCoordinates.ordinate;
         }
@@ -615,7 +670,7 @@ function calculateRightComparisonClusters() {
           // Seleziono randomicamente un altro cluster come cluster centrale
           let randomVar = floor(random(1, i));
           centralCluster = rightComparisonClusters[randomVar];
-          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 1);
+          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 2);
 
           // Imposto il centro del cluster
           cluster.center.x = generatedCoordinates.abscissa;
@@ -628,7 +683,7 @@ function calculateRightComparisonClusters() {
             );
             if (overlaps && subAttempts < 99) {
               // Creo un nuovo centro che non esca dal canvas
-              generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 1);
+              generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 2);
               cluster.center.x = generatedCoordinates.abscissa;
               cluster.center.y = generatedCoordinates.ordinate;
             }
@@ -730,7 +785,7 @@ function showHover() {
   }
 
   // Se il mouse è sopra un cerchio
-  if(selectedCluster != null) {
+  if(selectedCluster != null && !isComparison) {
     let category = categories[clusters.indexOf(selectedCluster)];
     let textLength = textWidth(category);
     
@@ -755,4 +810,43 @@ function showHover() {
       pop();
     }
   }
+  else if(selectedCluster != null && isComparison) {
+    let category = categories[clusters.indexOf(selectedCluster)];
+    let textLength = textWidth(category);
+    
+    push();
+    if(mouseX>windowWidth/2){
+      fill(37, 33, 41);
+      stroke(79, 79, 79);
+      rect(mouseX + 5-((3/2)*textLength+36), mouseY - 55, (3/2)*textLength+36, 60, 10);
+      noStroke();
+      fill("white");
+      textSize(18);
+      text(category, mouseX + 23 -((3/2)*textLength+36), mouseY - 18);
+
+      let categoryIndex = clusters.indexOf(selectedCluster);
+
+      let leftCategoryAmount = 0;
+      let rightCategoryAmount = 0;
+      for(let i = 0; i < regions.length - 1; i++) {
+        leftCategoryAmount += regionDataLastYear[i].data[categoryIndex].amount;
+        rightCategoryAmount += regionDataLastYear[i].data[categoryIndex].amount;
+      }
+
+      let leftText = "Sinistra: " + leftCategoryAmount + " €";
+      let rightText = "Destra: " + rightCategoryAmount + " €";
+      let leftTextLength = textWidth(leftText);
+      let rightTextLength = textWidth(rightText);
+
+      fill(37, 33, 41);
+      stroke(79, 79, 79);
+      rect(mouseX + 5-((3/2)*textLength+36), mouseY + 5, (3/2)*textLength+36, 60, 10);
+      noStroke();
+      fill("white");
+      textSize(18);
+      text(leftText, mouseX + 23 -((3/2)*textLength+36), mouseY + 40);
+      text(rightText, mouseX + 23 -((3/2)*textLength+36), mouseY + 20);
+    }
+  }
+      
 }
