@@ -264,7 +264,7 @@ a:visited {
   font-weight: 500;
 }
 
-#box {
+#box, #box-2 {
   width: 175px;
   height: 39px;
   padding: 5px;
@@ -275,55 +275,66 @@ a:visited {
   display: flex;
   flex-direction: column;
   justify-content: end;
-  background-color: transparent;
+  transition: height 0.5s, margin-top 0.5s, background-color 0.5s;
 }
-#box:hover {
+
+#box:hover, #box-2:hover {
   height: 200px;
-  transition: 0.5s;
   margin-top: -161px;
   background-color: rgba(61, 61, 61, 0.851);
 }
 
-#regions-list {
+/* Ensure #box-2 is hidden by default */
+#box-2 {
+  display: none;
+}
+
+/* Scrollbar consistency for both dropdowns */
+#regions-list, #regions-list-2 {
   height: 150px;
   overflow-y: scroll;
-  padding-right: 6px; /* Crea spazio tra il contenuto e la barra laterale */
+  padding-right: 6px;
   box-sizing: content-box;
   width: 100%;
-  scrollbar-width: none; /* Imposta la larghezza della barra di scorrimento */
-  scrollbar-color: transparent; /* Colore per il "thumb" e per il background */
+  scrollbar-width: none; /* Hide scrollbar */
+  scrollbar-color: transparent; /* Transparent scrollbar */
 }
+
 #regions-list::-webkit-scrollbar {
-  height: 5px;
   width: 7px;
   display: none;
 }
+
+#regions-list:hover {
+  scrollbar-color: white #807d83;
+}
+
 #regions-list::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #807d83;
 }
- #regions-list::-webkit-scrollbar-thumb:hover {
+
+#regions-list::-webkit-scrollbar-thumb:hover {
   background-color: white;
   transition: 0.2s;
   cursor: pointer;
 }
 
-#region-list:hover{
- scrollbar-color: white #807d83;
- }
-
-.single-region{
+/* Dropdown item styling */
+.single-region {
   font-family: 'forma-djr-text', sans-serif;
   font-size: 16px;
   padding: 10px 20px;
   border-radius: 13px;
   cursor: pointer;
-  color: rgb(255, 255, 255); 
+  color: rgb(255, 255, 255);
 }
-.single-region:hover{
+
+.single-region:hover {
   background-color: rgba(0, 0, 0, 0.362);
 }
 
+/* Consistency for the "comparison-button" */
 #comparison-button {
   width: 33px;
   height: 33px;
@@ -335,48 +346,24 @@ a:visited {
   justify-content: center;
   cursor: pointer;
   margin: 0 10px;
+  transition: transform 0.5s ease;
 }
+
 #comparison-button.rotated {
   transform: rotate(45deg);
 }
-#comparison-button {
-  transition: 0.5s ease;
-}
+
 #comparison-button img {
   width: 60%;
   height: 60%;
   display: block;
   margin: auto;
 }
-#comparison-dropdown {
-  position: absolute;
-  bottom:5px;
-}
 
-#box-2 {
-  display: none;
-  width: 175px;
-  height: 39px;
-  padding: 5px;
-  background-color: transparent;
-  border-radius: 15px;
-  overflow: hidden;
-  position: relative;
-  background-color: transparent; 
+/* Show #box-2 when active */
+#box-2.active {
   display: flex;
-  flex-direction: column;
-  justify-content: end;
-  transition: all 0.5s;
-  transition: all 0.7s;
 }
-
-#box-2:hover {
-  height: 200px;
-  transition: 0.5s;
-  margin-top: -161px;
-  background-color: rgba(61, 61, 61, 0.851);
-}
-
 #heading h1 {
   font-family: 'Ortica';
   font-size: 2rem;
