@@ -18,24 +18,12 @@
 
 let agentRadius = 3; // Valore di default per il raggio degli agenti
   
-class ClusterAgent {
-    constructor(x, y, cluster) {
-        // Position management
+class ClusterClass {
+    constructor(cluster) {
         this.homeCluster = cluster;
-        this.position = createVector(x, y);
-        this.velocity = createVector(0, 0);
-        this.acceleration = createVector(0, 0);
-
-        // Movement constraints
-        this.maxSpeed = 2;
-        this.maxForce = 0.1;
-        this.radius = agentRadius;
-
-        // Color management
         this.baseColor = cluster.color;
 
-        // Friction coefficient
-        this.friction = 0.2; // Less than 1 for gradual slowdown, 1 means no friction
+        this.position = createVector(cluster.center.x, cluster.center.y);
     }
 
     display() {
@@ -44,3 +32,105 @@ class ClusterAgent {
         ellipse(this.position.x, this.position.y, this.radius * 2);
     }
 }
+
+class ParticleClass {
+    constructor(parentCluster) {
+        // Generate a random position within the parent cluster
+        let posRadius = random(0, parentCluster.radius);
+        let angle = random(TWO_PI);
+        let x = parentCluster.center.x + cos(angle) * posRadius;
+        let y = parentCluster.center.y + sin(angle) * posRadius;
+        this.position = createVector(x, y);
+        this.velocity = createVector(random(-1, 1), random(-1, 1));
+        this.acceleration = createVector(0, 0);
+        this.parent = parentCluster;
+        this.radius = 1.5;  // Slightly larger for better separation
+        this.maxSpeed = 1;
+        this.maxForce = 0.1;
+        this.friction = 1;
+    }
+  
+    applyBehaviors(particles) {
+        let centerAttraction = this.attractToParentCenter();
+        //let separation = this.separate(particles);
+        let boundaryForce = this.stayInParent();
+    
+        centerAttraction.mult(0.3);
+        //separation.mult(0.8);  // Increased separation force
+        boundaryForce.mult(0.8);
+    
+        this.acceleration.add(centerAttraction);
+        //this.acceleration.add(separation);
+        this.acceleration.add(boundaryForce);
+    }
+  
+    attractToParentCenter() {
+        let parentPosition = createVector(this.parent.center.x, this.parent.center.y);
+        let desired = p5.Vector.sub(parentPosition, this.position);
+        let d = desired.mag();
+        let strength = map(d, 0, this.parent.radius, 0, this.maxSpeed);
+        desired.normalize();
+        desired.mult(strength);
+        let steer = p5.Vector.sub(desired, this.velocity);
+        steer.limit(this.maxForce);
+        return steer;
+    }
+  
+    separate(particles) {
+        let desiredSeparation = this.radius * 4;  // Increased separation distance
+        let sum = createVector(0, 0);
+        let count = 0;
+    
+        for (let other of particles) {
+            let d = p5.Vector.dist(this.position, other.position);
+            if (d > 0 && d < desiredSeparation) {
+            let diff = p5.Vector.sub(this.position, other.position);
+            diff.normalize();
+            // Stronger repulsion for very close particles
+            let strength = map(d, 0, desiredSeparation, 3, 0.5);
+            diff.mult(strength);
+            sum.add(diff);
+            count++;
+            }
+        }
+  
+        if (count > 0) {
+            sum.div(count);
+            sum.normalize();
+            sum.mult(this.maxSpeed * 1.5);  // Increased separation speed
+            let steer = p5.Vector.sub(sum, this.velocity);
+            steer.limit(this.maxForce * 2);  // Allow stronger separation force
+            return steer;
+        }
+        return createVector(0, 0);
+    }
+  
+    stayInParent() {
+        let outerParentPosition = createVector(this.parent.center.x, this.parent.center.y);
+        let d = p5.Vector.dist(this.position, outerParentPosition);
+        if (d > this.parent.radius * 0.8) {
+            let parentPosition = createVector(this.parent.center.x, this.parent.center.y);
+            let desired = p5.Vector.sub(parentPosition, this.position);
+            desired.normalize();
+            desired.mult(this.maxSpeed * 1.5);
+            let steer = p5.Vector.sub(desired, this.velocity);
+            steer.limit(this.maxForce * 1.5);
+            return steer;
+        }
+        return createVector(0, 0);
+    }
+  
+    update() {
+        this.velocity.add(this.acceleration);
+        this.velocity.mult(0.99);
+        this.velocity.limit(this.maxSpeed);
+        this.position.add(this.velocity);
+        this.acceleration.mult(0);
+    }
+  
+    display() {
+        fill(this.parent.color);
+        noStroke();
+        ellipse(this.position.x, this.position.y, this.radius * 2);
+    }
+  }

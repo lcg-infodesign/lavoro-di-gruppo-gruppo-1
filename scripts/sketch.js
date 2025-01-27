@@ -214,6 +214,7 @@ function setup() {
               cluster.center.x = -200;
               cluster.center.y = -200;
               centralCluster = clusters[0];
+              break;
             }
             else {
               centralCluster = clusters[0];
@@ -222,6 +223,10 @@ function setup() {
           }
         }
       }
+    }
+    // Aggiungo i pallini dei cluster
+    for(let i = 0; i < cluster.agentCount; i++) {
+      agents.push(new ParticleClass(cluster));
     }
   }
 }
@@ -396,12 +401,11 @@ function drawMainView() {
     ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
     noFill();
   });
-  // Simulation loop
-  /*for (let agent of agents) {
-    //agent.applyClusterBehaviors(agents); // TODO: Fare un controllo di fattibilità per vedere se è possibile applicare questa funzione
-    //agent.update();
+  for (let agent of agents) {
+    agent.applyBehaviors(agents);
+    agent.update();
     agent.display();
-  }*/
+  }
   /*
   let area = windowWidth * 0.9 * (windowHeight - 230);
   let circleArea = area / ((totalExpenses / 100000000) * 1.8);
