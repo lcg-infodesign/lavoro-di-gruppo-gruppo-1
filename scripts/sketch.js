@@ -483,13 +483,13 @@ function showHover() {
     let textLength = textWidth(category);
     
     push();
-    fill(255, 255, 255, 25);
+    fill(37, 33, 41);
     stroke(79, 79, 79);
-    rect(mouseX + 5, mouseY - 55, textLength, 50, 8);
+    rect(mouseX + 5, mouseY - 55, 2*textLength+36, 60, 10);
     noStroke();
     fill("white");
-    textSize(20);
-    text(category, mouseX + 15, mouseY - 30);
+    textSize(24)
+    text(category, mouseX + 23, mouseY - 18);
     pop();
   }
 }

@@ -180,3 +180,18 @@ window.addEventListener("scroll", () => {
 });
 
 
+
+const elements4 = document.querySelectorAll(".animated1");
+
+window.addEventListener("scroll", () => {
+    elements4.forEach((el) => {
+        const position = el.getBoundingClientRect().top;
+        if (position < window.innerHeight) {
+            el.classList.add("show");
+        } else {
+            el.classList.remove("show");
+        }
+    });
+});
+
+

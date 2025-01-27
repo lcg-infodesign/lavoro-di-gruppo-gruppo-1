@@ -510,11 +510,8 @@ flex-direction: column;
   width: 4vw;
   height: 4vw;
   z-index: -1000;
-  animation: animation 3s infinite, float 5s ease-in-out infinite;
-  animation-delay: 1.2s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-
+  animation: animation 3s infinite;
+  animation: float 6s ease-in-out infinite;
 }
 
 
@@ -528,8 +525,8 @@ flex-direction: column;
   height: 13vw;
   z-index: -1000;
   animation: animation 3s infinite;
-  animation: float 6s ease-in-out infinite;
- 
+  animation: float 7.4s ease-in-out infinite;
+
 }
 
 
@@ -544,7 +541,6 @@ flex-direction: column;
   z-index: -1000;
   animation: animation 3s infinite;
   animation: float 6s ease-in-out infinite;
-  animation-delay: 1.2s;
   animation-fill-mode: forwards;
 }
 
@@ -558,7 +554,7 @@ flex-direction: column;
   height: 6vw;
   z-index: -1000;
   animation: animation 3s infinite;
-  animation: float 6s ease-in-out infinite;
+  animation: float 4s ease-in-out infinite;
   animation-fill-mode: forwards;
 
 
@@ -575,7 +571,7 @@ flex-direction: column;
   height: 3vw;
   z-index: -1000;
   animation: animation 3s infinite;
-  animation: float 6s ease-in-out infinite;
+  animation: float 3s ease-in-out infinite;
 
 }
 
@@ -680,6 +676,12 @@ flex-direction: column;
     opacity: 0;
     transform: scale(0);
     transition: all 7s ease;
+    transition-delay: 0s;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    color:#252129;
 
 }
 
@@ -687,31 +689,100 @@ flex-direction: column;
     opacity: 1;
     width: 100%;
     transform: scale(0);
+    transition-delay: 1.5s;
 
 }
 
  
+.animated1 {
+  opacity: 0;
+    transform: scale(0);
+    transition: all 12s ease;
+    transition-delay: 1.3s;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    color:#252129;
+}
+
+.animated1 p{
+  font-size: 7vw;
+  rotate: -15deg;
+  font-weight: 600;
+  font-family: "semplicitapro", sans-serif;
+}
+
+.animated1.show {
+  opacity: 1;
+    width: 100%;
+    transform: scale(0);
+    transition-delay: 0s;
+} 
+
 .animated2 {
   opacity: 0;
     transform: scale(0);
     transition: all 12s ease;
+    transition-delay: 0s;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    color:#252129;
+}
+
+.animated p{
+  font-size: 2vw;
+  rotate: deg;
+  font-weight: 600;
+  font-family: "semplicitapro", sans-serif;
+}
+
+.animated2 p{
+  font-size: 5vw;
+  rotate: 20deg;
+  font-weight: 600;
+  font-family: "semplicitapro", sans-serif;
+}
+
+.animated3 p{
+  font-size: 3.2vw;
+  rotate: 30deg;
+  font-weight: 600;
+  font-family: "semplicitapro", sans-serif;
+}
+
+.animated4 p{
+  font-size: 1.5vw;
+  rotate: -30deg;
+  font-weight: 600;
+  font-family: "semplicitapro", sans-serif;
 }
 
 .animated2.show {
   opacity: 1;
     width: 100%;
     transform: scale(0);
+    transition-delay: 0.5s;
 }
 
 .animated3 {
   opacity: 0;
     transform: scale(0);
     transition: all 12s ease;
+    transition-delay: 0s;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    color:#252129;
 }
 
 .animated3.show {
   opacity: 1;
     width: 100%;
+    transition-delay: 1.2s;
     transform: scale(0);
 }
 
@@ -719,12 +790,19 @@ flex-direction: column;
   opacity: 0;
     transform: scale(0);
     transition: all 9s ease;
+    transition-delay: 0s;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    color:#252129;
 }
 
 .animated4.show {
   opacity: 1;
     width: 100%;
     transform: scale(0);
+    transition-delay: 1s;
 }
 
 
