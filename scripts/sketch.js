@@ -168,7 +168,7 @@ function setup() {
     }
     else {
       // Genero nuove coordinate vicine al cluster centrale
-      let generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster.center, cluster.radius + centralCluster.radius + 10);
+      let generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster);
 
       // Imposto il centro del cluster
       cluster.center.x = generatedCoordinates.abscissa;
@@ -181,7 +181,7 @@ function setup() {
         );
         if (overlaps) {
           // Creo un nuovo centro che non esca dal canvas
-          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster.center, cluster.radius + centralCluster.radius + 10);
+          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster);
           cluster.center.x = generatedCoordinates.abscissa;
           cluster.center.y = generatedCoordinates.ordinate;
         }
@@ -193,7 +193,7 @@ function setup() {
           // Seleziono randomicamente un altro cluster come cluster centrale
           let randomVar = floor(random(1, i));
           centralCluster = clusters[randomVar];
-          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster.center, cluster.radius + centralCluster.radius + 10);
+          generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster);
 
           // Imposto il centro del cluster
           cluster.center.x = generatedCoordinates.abscissa;
@@ -206,16 +206,17 @@ function setup() {
             );
             if (overlaps && subAttempts < 99) {
               // Creo un nuovo centro che non esca dal canvas
-              generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster.center, cluster.radius + centralCluster.radius + 10);
+              generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster);
               cluster.center.x = generatedCoordinates.abscissa;
               cluster.center.y = generatedCoordinates.ordinate;
             }
             else if(overlaps && subAttempts == 99) {
               cluster.center.x = -200;
               cluster.center.y = -200;
+              centralCluster = clusters[0];
             }
             else {
-              centralCluster = cluster;
+              centralCluster = clusters[0];
               break;
             }
           }
@@ -233,13 +234,61 @@ function setup() {
  * @param {*} radius La somma tra il raggio del cluster centrale e quello del cluster attuale, con un margine di 10
  * @returns Coordinata casuale sulla circonferenza esterna del cerchio
  */
-function generateRandomCoordinatesOnOuterCircle(center, radius) {
-  // Creo un il raggio che userò per calcolare la circonferenza esterna
-  let leftAbscissaRange = center.x - radius;
-  let rightAbscissaRange = center.x + radius;
+function generateRandomCoordinatesOnOuterCircle(centralCluster, cluster) {
+  // Creo un raggio sommando quello del cluster centrale e quello del cluster attuale
+  let totalRadius = centralCluster.radius + cluster.radius + 10;
+  const minY = centralCluster.center.y - centralCluster.radius; // Punto più basso del cluster centrale
+  const maxY = centralCluster.center.y + centralCluster.radius; // Punto più alto del cluster centrale
+
+  // Controllo se il total radius, partendo dal centro del cluster centrale, esce dal canvas
+  if(centralCluster.center.x - totalRadius < 0 || centralCluster.center.x + totalRadius > frameWidth) {
+    // Non esce dal canvas, cerco posizione randomica calcolando l'ascissa massima e minima
+    let leftAbscissaRange = centralCluster.center.x - totalRadius;
+    let rightAbscissaRange = centralCluster.center.x + totalRadius;
+
+    // Controllo che l'ascissa sommando il raggio non esca dal canvas
+    if(leftAbscissaRange < 0) {
+      leftAbscissaRange = centralCluster.center.x + centralCluster.radius;
+    }
+    if(rightAbscissaRange > frameWidth) {
+      rightAbscissaRange = centralCluster.center.x - centralCluster.radius;
+    }
+
+    // Trovo una ascissa casuale all'interno del range
+    let abscissa = random(leftAbscissaRange, rightAbscissaRange);
+    // Calcolo l'ordinata in base all'ascissa
+    let ordinate = sqrt(pow(cluster.radius, 2) - pow(abscissa - centralCluster.center.x, 2));
+
+    // Calcolo il quadrante in cui si trova il punto
+    if(random() < 0.5) {
+      ordinate = centralCluster.center.y + ordinate;
+    }
+    else {
+      ordinate = centralCluster.center.y - ordinate;
+    }
+    
+    // Controllo che l'ordinata generata 
+
+    return { abscissa, ordinate };
+  }
+  else {
+    // Esce dal canvas, cerco posizione che abbia ordinate tra minY e maxY
+    const centerDY = Math.random() * (maxY - minY) + minY;
+
+    // Calcola la distanza orizzontale dall'asse X per rispettare il raggio totale
+    const deltaX = Math.sqrt(Math.pow(totalRadius, 2) - Math.pow(centerDY - centralCluster.center.y, 2));
+
+    // Decidi casualmente se andare a sinistra o a destra del centro del cluster centrale
+    const direction = Math.random() < 0.5 ? -1 : 1;
+    const centerDX = centralCluster.center.x + direction * deltaX;
+
+    return { abscissa: centerDX, ordinate: centerDY };
+  }
+
+  
 
   // Controllo che l'ascissa sommando il raggio non esca dal canvas
-  if(leftAbscissaRange < 0) {
+  /*if(leftAbscissaRange < 0) {
     leftAbscissaRange = center.x + radius;
   }
   if(rightAbscissaRange > frameWidth) {
@@ -261,7 +310,7 @@ function generateRandomCoordinatesOnOuterCircle(center, radius) {
   
   // Controllo che l'ordinata generata 
 
-  return { abscissa, ordinate };
+  return { abscissa, ordinate };*/
 }
 
 /**
