@@ -235,7 +235,7 @@ background: linear-gradient(170.5deg, rgb(255, 255, 255) 16.96%, rgba(255, 255, 
   width: 100%;
 }
 
-.region-label {
+.region-label, .comparison-label {
   border: none;
   font-size: 16px;
   font-weight: 400;
@@ -248,14 +248,14 @@ background: linear-gradient(170.5deg, rgb(255, 255, 255) 16.96%, rgba(255, 255, 
   font-weight: 400;
   transition: 0.2s;
 }
-.region-label:hover {
+.region-label:hover, .comparison-label:hover {
   background-color: white;
   color: #343038;
   transition: 0.3s;
   font-weight: 500;
   cursor: pointer;
 }
-.region-label.selected {
+.region-label.selected, .comparison-label.selected {
   background-color: white;
   color: #343038;
   font-weight: 500;

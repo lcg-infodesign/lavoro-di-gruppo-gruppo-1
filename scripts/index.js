@@ -26,7 +26,7 @@ function pDrawLabels() {
 
         // Comparison dropdown buttons
         let comparisonButton = document.createElement('button');
-        comparisonButton.className = 'region-label';
+        comparisonButton.className = 'comparison-label';
         comparisonButton.value = regions[i];
         comparisonButton.innerHTML = regions[i];
         comparisonButton.onclick = pComparisonClicked;
@@ -71,7 +71,7 @@ function pComparisonClicked(e) {
     const clickedRegion = e.target;
 
     // Rimuovi la classe 'selected' da tutte le altre regioni
-    const allRegionLabels = document.querySelectorAll('.region-label');
+    const allRegionLabels = document.querySelectorAll('.comparison-label');
     allRegionLabels.forEach(region => {
         region.classList.remove('selected'); // Rimuove la classe 'selected' (simulando "hover off")
     });
@@ -93,43 +93,36 @@ function pComparisonClicked(e) {
  * @param {Event} e Evento del click
  */
 function pToggleComparisonButton(e) {
+    console.log("Toggle comparison button");
     let pComparisonDropdown = document.getElementById('box-2');
     let button = e.target.closest('#comparison-button'); // Ensure we get the button element
     
-    if(pComparisonDropdown.style.display == 'block') {
+    if(pComparisonDropdown.style.display == 'flex') {
         // Nascondo il dropdown
         pComparisonDropdown.style.display = 'none';
         // Ruoto il pulsante di apertura del dropdown di 45 gradi
         button.classList.remove('rotated');
-        // Abilito la selezione di Tutte le regioni
-        document.getElementById('regions-dropdown').childNodes[0].disabled = false;
         // Modifico la visualizzazione
         isComparison = false;
     }
     else {
         // Mostro il dropdown
-        pComparisonDropdown.style.display = 'block';
+        pComparisonDropdown.style.display = 'flex';
         // Ruoto il pulsante di apertura del dropdown di 45 gradi
         button.classList.add('rotated');
         // Cambio la selezione del dropdown di sinistra se è tutte le regioni
         if(selectedRegion == "Tutte le regioni") {
-            document.getElementById('regions-dropdown').selectedIndex = 3;
+            document.getElementById('bottom-selected-region').innerHTML = "Lombardia";
+            document.getElementsByClassName('region-label')[0].classList.remove('selected');
+            document.getElementsByClassName('region-label')[pFindRegionIndex('Lombardia')].classList.add('selected');
             selectedRegion = "Lombardia";
         }
         // Disabilito la selezione di Tutte le regioni
-        document.getElementById('regions-dropdown').childNodes[0].disabled = true;
+        // TODO: Implementare questa condizione
         // Modifico la visualizzazione
         isComparison = true;
     }
     tToggleVisibility();
-}
-
-/**
- * Funzione per gestire il cambio della selezione della regione di confronto
- * @param {*} e 
- */
-function pComparisonClicked(e) {
-    selectedComparison = e.target.value;
 }
 
 const elements = document.querySelectorAll(".animated");
