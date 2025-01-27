@@ -304,18 +304,18 @@ function generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, compari
   }
   else {
     // Controllo che il total radius a partire dal centro non esca dalla metà sinistra del canvas
-    if(centralCluster.center.x - totalRadius > 0 && centralCluster.center.x + totalRadius < frameWidth / 2) {
+    if(centralCluster.center.x - totalRadius < 0 || centralCluster.center.x + totalRadius > frameWidth / 2) {
       // Non esce dal canvas, cerco posizione randomica calcolando l'ascissa massima e minima
       let leftAbscissaRange = centralCluster.center.x - totalRadius;
       let rightAbscissaRange = centralCluster.center.x + totalRadius;
 
       // Controllo che l'ascissa sommando il raggio non esca dal canvas
-      if(leftAbscissaRange < 0) {
+      /*if(leftAbscissaRange <= 0) {
         leftAbscissaRange = centralCluster.center.x + centralCluster.radius;
       }
       if(rightAbscissaRange > frameWidth / 2) {
         rightAbscissaRange = centralCluster.center.x - centralCluster.radius;
-      }
+      }*/
 
       // Trovo una ascissa casuale all'interno del range
       let abscissa = random(leftAbscissaRange, rightAbscissaRange);
@@ -336,16 +336,21 @@ function generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, compari
       return { abscissa, ordinate };
     }
     else {
-      // Esce dal canvas, cerco posizione che abbia ordinate tra minY e maxY
-      const centerDY = Math.random() * (maxY - minY) + minY;
+      // Esce dal canvas, cerco posizione che abbia ordinate verticali all'interno del canvas
+      const centerDY = Math.random(1) * frameHeight;
 
       // Calcola la distanza orizzontale dall'asse X per rispettare il raggio totale
-      const deltaX = Math.sqrt(Math.pow(totalRadius, 2) - Math.pow(centerDY - centralCluster.center.y, 2));
+      let calcVar = Math.pow(totalRadius, 2) - Math.pow(centerDY - centralCluster.center.y, 2);
+      if(calcVar < 0) {
+        calcVar = 0;
+      }
+      const deltaX = Math.sqrt(calcVar);
 
       // Decidi casualmente se andare a sinistra o a destra del centro del cluster centrale
       const direction = Math.random() < 0.5 ? -1 : 1;
       const centerDX = centralCluster.center.x + direction * deltaX;
 
+      console.log("centerDX: " + centerDX + " centerDY: " + centerDY);
       return { abscissa: centerDX, ordinate: centerDY };
     }
   }
@@ -378,18 +383,21 @@ function draw() {
  */
 function drawComparisonView() {
   /** Visualizzazione di sinistra */
-  
-
-  // Disegno i cluster
   for(let i = 0; i < leftComparisonClusters.length; i++) {
     let cluster = leftComparisonClusters[i];
-    //console.log(cluster.center);
     // Disegno il cluster
     fill("red");
     ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
     noFill();
   }
-
+  for(let i = 0; i < leftComparisonAgents.length; i++) {
+    let agent = agents[i];
+    agent.applyBehaviors(agents);
+    agent.update();
+    agent.setColored(true);
+    agent.display();
+  }
+  
   /** Visualizzazione di destra */
   rightComparisonClusters.forEach(cluster => {
     fill("green");
@@ -417,15 +425,24 @@ function calculateLeftComparisonClusters() {
     }
     cluster.agentCount = agentSum;
 
+    if(agentSum == 0) {
+      cluster.agentCount = 1;
+    }
+
     // Ridimensiono raggio cluster in base a numero agenti
     let agentsArea = cluster.agentCount * (4 * agentRadius * agentRadius) * 1.1;
     let newRadius = sqrt(agentsArea / PI);
     cluster.radius = newRadius;
+
+    if(cluster.radius < 1 ) {
+      cluster.radius = 1;
+    }
   }
 
   // Riordino i cluster in base al numero di agenti
   leftComparisonClusters.sort((a, b) => b.agentCount - a.agentCount);
   let centralCluster = leftComparisonClusters[0];
+
   centralCluster.center.x = frameWidth / 4;
   centralCluster.center.y = frameHeight / 2;
 
@@ -446,7 +463,7 @@ function calculateLeftComparisonClusters() {
 
       // Controllo che il cluster non si sovrapponga a cluster esistenti
       for(let attempts = 0; attempts < 1000; attempts++) {
-        let overlaps = clusters.some(c => 
+        let overlaps = leftComparisonClusters.some(c => 
           c != cluster && clusterDistance(c.center, cluster.center) < (c.radius + cluster.radius + 5)
         );
         if (overlaps) {
@@ -462,7 +479,7 @@ function calculateLeftComparisonClusters() {
         if(attempts == 999) {
           // Seleziono randomicamente un altro cluster come cluster centrale
           let randomVar = floor(random(1, i));
-          centralCluster = clusters[randomVar];
+          centralCluster = leftComparisonClusters[randomVar];
           generatedCoordinates = generateRandomCoordinatesOnOuterCircle(centralCluster, cluster, 1);
 
           // Imposto il centro del cluster
@@ -471,7 +488,7 @@ function calculateLeftComparisonClusters() {
 
           // Controllo che il cluster non si sovrapponga a cluster esistenti
           for(let subAttempts = 0; subAttempts < 100; subAttempts++) {
-            let overlaps = clusters.some(c => 
+            let overlaps = leftComparisonClusters.some(c => 
               c != cluster && clusterDistance(c.center, cluster.center) < (c.radius + cluster.radius + 5)
             );
             if (overlaps && subAttempts < 99) {
@@ -483,16 +500,20 @@ function calculateLeftComparisonClusters() {
             else if(overlaps && subAttempts == 99) {
               cluster.center.x = -200;
               cluster.center.y = -200;
-              centralCluster = clusters[0];
+              centralCluster = leftComparisonClusters[0];
               break;
             }
             else {
-              centralCluster = clusters[0];
+              centralCluster = leftComparisonClusters[0];
               break;
             }
           }
         }
       }
+    }
+    // Aggiungo i pallini dei cluster
+    for(let i = 0; i < cluster.agentCount; i++) {
+      leftComparisonAgents.push(new ParticleClass(cluster));
     }
   }
 }
@@ -608,14 +629,16 @@ function showHover() {
       fill("white");
       textSize(18);
       text(category, mouseX + 23 -((3/2)*textLength+36), mouseY - 18);
-    }else{
-    fill(37, 33, 41);
-    stroke(79, 79, 79);
-    rect(mouseX + 5, mouseY - 55, (3/2)*textLength+36, 60, 10);
-    noStroke();
-    fill("white");
-    textSize(18);
-    text(category, mouseX + 23, mouseY - 18);}
-    pop();
+    }
+    else {
+      fill(37, 33, 41);
+      stroke(79, 79, 79);
+      rect(mouseX + 5, mouseY - 55, (3/2)*textLength+36, 60, 10);
+      noStroke();
+      fill("white");
+      textSize(18);
+      text(category, mouseX + 23, mouseY - 18);
+      pop();
+    }
   }
 }
