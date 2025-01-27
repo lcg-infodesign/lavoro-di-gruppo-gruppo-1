@@ -191,7 +191,7 @@ background: linear-gradient(170.5deg, rgb(255, 255, 255) 16.96%, rgba(255, 255, 
   padding: 0;
 }
 #heading p {
-  font-family: 'forma-djr-text', sans-serif;
+  font-family: "semplicitapro", sans-serif;
   font-size: 20px;
   font-weight: lighter;
   color: white;
@@ -221,9 +221,10 @@ background: linear-gradient(170.5deg, rgb(255, 255, 255) 16.96%, rgba(255, 255, 
   margin-bottom: 50px;
 }
 .regions-select {
-  font-family: 'forma-djr-text', sans-serif;
+  font-family: "semplicitapro", sans-serif;
   font-size: 16px;
-  background-color: white;
+  background: linear-gradient(170.5deg, rgb(255, 255, 255) 16.96%, rgba(255, 255, 255, 0.276) 87.84%);
+  font-weight: 800;
   padding: 10px 20px;
   border-radius: 13px;
   -webkit-appearance: none;
@@ -239,27 +240,31 @@ background: linear-gradient(170.5deg, rgb(255, 255, 255) 16.96%, rgba(255, 255, 
 .region-label, .comparison-label {
   border: none;
   font-size: 16px;
-  font-weight: 400;
   height: 39px;
   width: 100%;
   margin-top: 3px;
   border-radius: 13px;
   background-color: transparent;
+  font-family: "semplicitapro", sans-serif;
   color: white;
   font-weight: 400;
   transition: 0.2s;
 }
 .region-label:hover, .comparison-label:hover {
-  background-color: white;
+  background: linear-gradient(170.5deg, rgb(255, 255, 255) 16.96%, rgba(255, 255, 255, 0.276) 87.84%);
   color: #343038;
   transition: 0.3s;
   font-weight: 500;
+  font-family: "semplicitapro", sans-serif;
+
   cursor: pointer;
 }
 .region-label.selected, .comparison-label.selected {
-  background-color: white;
+  background: linear-gradient(170.5deg, rgb(255, 255, 255) 16.96%, rgba(255, 255, 255, 0.276) 87.84%);
   color: #343038;
-  font-weight: 500;
+  font-weight: 800;
+  font-family: "semplicitapro", sans-serif;
+
 }
 
 #box, #box-2 {
@@ -279,7 +284,13 @@ background: linear-gradient(170.5deg, rgb(255, 255, 255) 16.96%, rgba(255, 255, 
 #box:hover, #box-2:hover {
   height: 200px;
   margin-top: -161px;
-  background-color: rgba(61, 61, 61, 0.851);
+  background: linear-gradient(170.5deg, rgba(255, 255, 255, 0.1) 16.96%, rgba(255, 255, 255, 0.02) 87.84%);
+  backdrop-filter: blur(10px);
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 20px;
+  box-shadow: 2px 2px 20px 0px rgba(255, 255, 255, 0.156) inset;
+  font-family: "semplicitapro", sans-serif;
+  border: solid, 1px, rgb(79, 79, 79);
 }
 
 /* Ensure #box-2 is hidden by default */
@@ -320,7 +331,7 @@ background: linear-gradient(170.5deg, rgb(255, 255, 255) 16.96%, rgba(255, 255, 
 
 /* Dropdown item styling */
 .single-region {
-  font-family: 'forma-djr-text', sans-serif;
+  font-family: "semplicitapro", sans-serif;
   font-size: 16px;
   padding: 10px 20px;
   border-radius: 13px;
