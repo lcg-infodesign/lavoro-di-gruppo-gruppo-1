@@ -20,10 +20,16 @@ Il progetto è strutturato nei seguenti file:
 - `sketch.js`: file JavaScript contenente il codice per la visualizzazione dell'infografica
 
 ## Team
-Bano:
-Chinni:
-Lages:
-Magalhaes:
-Menoni:
-Piganzoli:
-Segato:
+Bano: Ha svolto un ruolo centrale nella ricerca, contribuendo in modo significativo alla definizione dei font e della palette cromatica. Ha fornito anche un apporto cruciale nella fase di brainstorming e nella selezione dei temi iniziali del progetto.
+
+Chinni: Ha avuto un ruolo iniziale nella progettazione grafica, realizzando le prime rappresentazioni visive dei puntini e ideando la rappresentazione del confronto. Successivamente in fase di programmazione, ha contribuito allo sviluppo della fisica della rappresentazione tramite p5.js e si è occupato dell'organizzazione della repository del progetto.
+
+Lages: Si è occupato principalmente degli aspetti grafici, sperimentando diverse soluzioni per l'interfaccia utente (UI) e fornendo supporto nell'ottimizzazione dell'esperienza utente (UX) durante le fasi di ideazione del progetto.
+
+Magalhaes: Ha contribuito in diversi ambiti, dalla scelta della palette cromatica e dei font fino alla progettazione di una delle prime versioni dell'interfaccia e della rappresentazione visiva delle categorie. Ha inoltre collaborato con Bano alla stesura dei testi del progetto.
+
+Menoni: Ha lavorato alla progettazione grafica delle sezioni iniziali del sito, in particolare la pagina introduttiva e la pagina di spiegazione secondaria, collaborando strettamente con Piganzoli. Inoltre, ha realizzato il prototipo del progetto su Figma e ha contribuito alla creazione delle componenti grafiche definitive.
+
+Piganzoli: Si è occupato della programmazione, sviluppando gran parte della fisica dei puntini e contribuendo alla progettazione grafica delle sezioni iniziali del sito, in particolare la pagina introduttiva e quella di spiegazione, in collaborazione con Menoni.
+
+Segato: Ha coordinato lo sviluppo del codice del progetto, supervisionando le attività del team e correggendo eventuali errori o imprecisioni. Ha inoltre definito i confini del progetto, indicando la fattibilità delle varie idee proposte.

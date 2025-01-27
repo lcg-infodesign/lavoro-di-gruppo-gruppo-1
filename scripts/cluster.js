@@ -47,6 +47,7 @@ class ParticleClass {
         this.maxSpeed = 1;
         this.maxForce = 0.1;
         this.friction = 1;
+        this.colored = true;
     }
   
     applyBehaviors(particles) {
@@ -61,6 +62,14 @@ class ParticleClass {
         //this.acceleration.add(centerAttraction);
         //this.acceleration.add(separation);
         this.acceleration.add(boundaryForce);
+    }
+
+    /**
+     * Funzione per determinare se l'agente deve essere colorato
+     * @param {boolean} colored Il valore booleano che determina se l'agente deve essere colorato
+     */
+    setColored(colored) {
+        this.colored = colored;
     }
   
     attractToParentCenter() {
@@ -128,7 +137,12 @@ class ParticleClass {
     }
   
     display() {
-        fill(this.parent.color);
+        if(this.colored) {
+            fill(this.parent.color);
+        } else {
+            // Creo un colore opaco
+            fill(String(this.parent.color) + "20");
+        }
         noStroke();
         ellipse(this.position.x, this.position.y, this.radius * 2);
     }

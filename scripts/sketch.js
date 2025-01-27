@@ -399,47 +399,40 @@ function drawMainView() {
     ellipse(cluster.center.x, cluster.center.y, cluster.radius * 2);
     noFill();
   });
-  for (let agent of agents) {
+
+  let selectedRegionIndex = regions.indexOf(selectedRegion);
+
+  // Salvo il colore del cluster precedente
+  let previousColor = agents[0].parent.color;
+  let amountSum = 0;
+  let currentCategory = 0;
+  let currentCategoryAmount = regionDataLastYear[selectedRegionIndex].data[0].amount;
+  for(let i = 0; i < agents.length; i++) {
+    let agent = agents[i];
     agent.applyBehaviors(agents);
     agent.update();
-    agent.display();
-  }
-  /*
-  let area = windowWidth * 0.9 * (windowHeight - 230);
-  let circleArea = area / ((totalExpenses / 100000000) * 1.8);
-  let radius = Math.sqrt(circleArea / Math.PI);
-
-  let positionX = radius;
-  let positionY = radius;
-
-  let counter = 0;
-  for(let i = 0; i < expensesPerCategory.length; i++) {
-    for(let j = 0; j < expensesPerCategory[i]; j+= 100000000) {
-      if(selectedRegion == "Tutte le regioni") {
-        fill(categoriesColors[i]);
-        circle(positionX, positionY, radius * 2);
-        counter++;
-        positionX += radius * 2;
-        if(positionX > windowWidth * 0.9) {
-          positionX = radius;
-          positionY += radius * 2;
-        }
+    // Controllo che l'agente sia da colorare o no
+    if(selectedRegion == "Tutte le regioni") {
+      agent.setColored(true);
+    }
+    else {
+      if(amountSum < currentCategoryAmount) {
+        agent.setColored(true);
+        amountSum += 100000000;
       }
       else {
-        if(j < regionDataLastYear[regions.indexOf(selectedRegion) - 1].data[i].amount) {
-          fill(categoriesColors[i]);
-          circle(positionX, positionY, radius * 2);
-          counter++;
-          positionX += radius * 2;
-          if(positionX > windowWidth * 0.9) {
-            positionX = radius;
-            positionY += radius * 2;
-          }
+        agent.setColored(false);
+        amountSum += 100000000;
+        if(amountSum >= expensesPerCategory[currentCategory]) {
+          currentCategory++;
+          currentCategoryAmount = regionDataLastYear[selectedRegionIndex - 1].data[currentCategory].amount;
+          amountSum = 0;
         }
       }
+      previousColor = agent.parent.color;
     }
+    agent.display();
   }
-    */
 }
 
 /**
