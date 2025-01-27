@@ -16,7 +16,7 @@
     boundaryStiffness: 0.5    // Strength of boundary enforcement
  */
 
-let agentRadius = 3; // Valore di default per il raggio degli agenti
+let agentRadius = 1; // Valore di default per il raggio degli agenti
   
 class ClusterClass {
     constructor(cluster) {
@@ -43,7 +43,7 @@ class ParticleClass {
         this.velocity = createVector(random(-1, 1), random(-1, 1));
         this.acceleration = createVector(0, 0);
         this.parent = parentCluster;
-        this.radius = 1.5;  // Slightly larger for better separation
+        this.radius = agentRadius;
         this.maxSpeed = 1;
         this.maxForce = 0.1;
         this.friction = 1;
@@ -54,9 +54,9 @@ class ParticleClass {
         //let separation = this.separate(particles);
         let boundaryForce = this.stayInParent();
     
-        centerAttraction.mult(0.3);
+        centerAttraction.mult(0.5);
         //separation.mult(0.1);  // Increased separation force
-        boundaryForce.mult(0.8);
+        boundaryForce.mult(0.1);
     
         //this.acceleration.add(centerAttraction);
         //this.acceleration.add(separation);
@@ -107,7 +107,7 @@ class ParticleClass {
     stayInParent() {
         let outerParentPosition = createVector(this.parent.center.x, this.parent.center.y);
         let d = p5.Vector.dist(this.position, outerParentPosition);
-        if (d > this.parent.radius * 0.8) {
+        if (d > this.parent.radius) {
             let parentPosition = createVector(this.parent.center.x, this.parent.center.y);
             let desired = p5.Vector.sub(parentPosition, this.position);
             desired.normalize();
