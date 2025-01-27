@@ -47,28 +47,19 @@ function tToggleView(selected) {
     if (selected === 0) {
         leftToggle.classList.add("m-selected");  // Aggiungo la classe m-selected al pulsante sinistro
         rightToggle.classList.remove("m-selected");  // Rimuovo la classe m-selected dal pulsante destro
-        document.getElementById("topballs").src="assets/images/Gif_spazivuoti_bottomright_verde.gif"
-        document.getElementById("link").style.color="#B8E557"
-        document.getElementById("titolo").style.color="#B8E557"
-        document.getElementsByClassName("demo-circle")[0].style.backgroundColor="#B8E557"
-        document.getElementById("demo-value").textContent="100.000.000€"
+        //document.getElementById("euro").src="assets/images/%.png"
+        //document.getElementById("demo-value").textContent="100.000.000€"
+        document.getElementById("testobasso").innerHTML="Ogni cerchio rappresenta una spesa di 100 milioni di Euro"
 
         
 
 
     } else {  // Se il pulsante destro è selezionato (selected = 1)
         rightToggle.classList.add("m-selected");  // Aggiungo la classe m-selected al pulsante destro
-        leftToggle.classList.remove("m-selected");  // Rimuov la classe m-selected dal pulsante sinistro
-        document.getElementById("topballs").src="assets/images/Gif_spazivuoti_bottomright_viola.gif"
-        document.getElementById("link").style.color="#A757E5"
-        document.getElementById("titolo").style.color="#A757E5"
-        document.getElementsByClassName("demo-circle")[0].style.backgroundColor="#A757E5"
-        document.getElementById("demo-value").textContent="%"
-
-
-
-
-
+        leftToggle.classList.remove("m-selected");  // Rimuove la classe m-selected dal pulsante sinistro
+        //document.getElementById("euro").src="assets/images/euro.png"
+        //document.getElementById("demo-value").textContent="%"
+        document.getElementById("testobasso").innerHTML="Ogni cerchio rappresenta un valore percentuale"
 
     }
 }
