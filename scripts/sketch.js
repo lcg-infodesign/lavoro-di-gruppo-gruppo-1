@@ -600,13 +600,22 @@ function showHover() {
     let textLength = textWidth(category);
     
     push();
+    if(mouseX>windowWidth/2){
+      fill(37, 33, 41);
+      stroke(79, 79, 79);
+      rect(mouseX + 5-((3/2)*textLength+36), mouseY - 55, (3/2)*textLength+36, 60, 10);
+      noStroke();
+      fill("white");
+      textSize(18);
+      text(category, mouseX + 23 -((3/2)*textLength+36), mouseY - 18);
+    }else{
     fill(37, 33, 41);
     stroke(79, 79, 79);
     rect(mouseX + 5, mouseY - 55, (3/2)*textLength+36, 60, 10);
     noStroke();
     fill("white");
     textSize(18);
-    text(category, mouseX + 23, mouseY - 18);
+    text(category, mouseX + 23, mouseY - 18);}
     pop();
   }
 }
