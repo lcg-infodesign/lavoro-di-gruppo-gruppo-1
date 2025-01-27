@@ -64,6 +64,9 @@ function pRegionClicked(e) {
     let pSelection = document.getElementById("bottom-selected-region");
     pSelection.value = selectedRegion;
     pSelection.innerHTML = selectedRegion;
+
+    // Ricalcolo i cluster per la regione selezionata
+    calculateLeftComparisonClusters();
 }
 
 function pComparisonClicked(e) {
@@ -84,16 +87,16 @@ function pComparisonClicked(e) {
     let pSelection = document.getElementById("comparison-dropdown");
     pSelection.value = selectedRegion;
     pSelection.innerHTML = selectedRegion;
+
+    // Calcolo nuovamente i cluster e gli agenti per la regione selezionata
+    calculateRightComparisonClusters();
 }
-
-
 
 /**
  * Funzione per mostrare il dropdown per la selezione della regione
  * @param {Event} e Evento del click
  */
-function pToggleComparisonButton(e) {
-    console.log("Toggle comparison button");
+function pToggleComparisonButton(e) {    
     let pComparisonDropdown = document.getElementById('box-2');
     let button = e.target.closest('#comparison-button'); // Ensure we get the button element
     
@@ -123,6 +126,11 @@ function pToggleComparisonButton(e) {
         isComparison = true;
     }
     tToggleVisibility();
+
+    // Effettuo il calcolo dei cluster e degli agenti per la regione di sinistra
+    calculateLeftComparisonClusters();
+    // Effettuo il calcolo dei cluster e degli agenti per la regione di destra
+    calculateRightComparisonClusters();
 }
 
 const elements = document.querySelectorAll(".animated");
